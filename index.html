@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>City of Alameda Planning Fee Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --brand: #22498C;
+      --brand-text: #EFF0F4;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --accent: #f1f5f9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+      padding: 10px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .layout { display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .card-title { font-weight: 700; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; color: #64748b; }
+
+    input[type="number"] {
+      width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem;
+    }
+
+    .fee-list-container { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .fee-category {
+      background: var(--accent); padding: 8px 12px; font-weight: 700; font-size: 0.8rem;
+      text-transform: uppercase; border-bottom: 1px solid var(--border);
+    }
+    .fee-item {
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+    .fee-item:hover { background: #f8fafc; }
+    .fee-name { flex: 1; font-size: 0.9rem; cursor: pointer; }
+    .fee-price { font-weight: 700; color: #0f172a; font-size: 0.9rem; }
+
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+    .total-row {
+      margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border);
+      display: flex; justify-content: space-between; font-weight: 800; font-size: 1.4rem;
+    }
+
+    .btn {
+      width: 100%; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid var(--border); margin-top: 10px;
+    }
+    .btn-print { background: var(--brand); color: var(--brand-text); border: none; }
+    .btn-clear { background: white; color: var(--text); }
+
+    @media print {
+      .btn, input, .fee-list-container, .card-title { display: none !important; }
+      .layout { display: block; }
+      .card { border: none; box-shadow: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="layout">
+    <div>
+      <section class="card">
+        <div class="card-title">1. Project Valuation</div>
+        <input type="number" id="valuation" placeholder="Enter Valuation ($)" oninput="calculate()">
+        <p style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">
+          The Community Planning Fee is 0.5% of valuation, or 0.5% of activity fees (min $5) if blank.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="card-title">2. Activity Fees</div>
+        <div id="feeList" class="fee-list-container">
+           <button class="btn" onclick="init()">Click to Load Activities</button>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <div class="card">
+        <div class="card-title">Fee Estimate</div>
+        <div class="summary-row"><span>Activities:</span> <strong id="resActivity">$0.00</strong></div>
+        <div class="summary-row"><span>Filing Fee:</span> <strong id="resFiling">$0.00</strong></div>
+        <div class="summary-row"><span>Comm. Planning:</span> <strong id="resCpf">$0.00</strong></div>
+        <div class="summary-row"><span>Tech Fee (6%):</span> <strong id="resTech">$0.00</strong></div>
+        <div class="total-row"><span>Total:</span> <span id="resTotal">$0.00</span></div>
+        <button class="btn btn-print" onclick="window.print()">Print Fee Estimate</button>
+        <button class="btn btn-clear" onclick="location.reload()">Clear All</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  const FEE_DATA = [
+    { cat: "Ministerial", name: "Ministerial Review Application", amt: 3796, filing: true },
+    { cat: "Appeals", name: "Appeal: Minor Projects", amt: 1432, filing: false },
+    { cat: "Design Review", name: "DR Exemption: Minor Alterations", amt: 143, filing: true },
+    { cat: "Design Review", name: "New Single-Family Dwelling", amt: 3796, filing: true },
+    { cat: "Historic", name: "Certificate of Approval", amt: 4297, filing: true },
+    { cat: "Trees", name: "Removal of Protected Tree", amt: 430, filing: true },
+    { cat: "Use Permits", name: "Use Permit Amendment", amt: 3223, filing: true }
+  ];
+
+  function calculate() {
+    const list = document.getElementById('feeList');
+    const selected = Array.from(list.querySelectorAll('input:checked'));
+    const actTotal = selected.reduce((sum, el) => sum + parseFloat(el.dataset.amt), 0);
+    const filTotal = selected.some(el => el.dataset.filing === "true") ? 95 : 0;
+    const val = parseFloat(document.getElementById('valuation').value) || 0;
+    
+    let cpf = 0;
+    if (val > 0) { cpf = val * 0.005; } 
+    else if (actTotal > 0) { cpf = Math.max(5, actTotal * 0.005); }
+
+    const techTotal = (actTotal + filTotal) * 0.06;
+    const grandTotal = actTotal + filTotal + cpf + techTotal;
+
+    document.getElementById('resActivity').innerText = `$${actTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    document.getElementById('resFiling').innerText = `$${filTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    document.getElementById('resCpf').innerText = `$${cpf.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    document.getElementById('resTech').innerText = `$${techTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    document.getElementById('resTotal').innerText = `$${grandTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+  }
+
+  function init() {
+    const list = document.getElementById('feeList');
+    const categories = [...new Set(FEE_DATA.map(f => f.cat))];
+    list.innerHTML = categories.map(cat => `
+      <div class="fee-category">${cat}</div>
+      ${FEE_DATA.filter(f => f.cat === cat).map((f, i) => `
+        <div class="fee-item">
+          <input type="checkbox" id="f-${cat}-${i}" data-amt="${f.amt}" data-filing="${f.filing}" onchange="calculate()">
+          <label class="fee-name" for="f-${cat}-${i}">${f.name}</label>
+          <span class="fee-price">$${f.amt.toLocaleString()}</span>
+        </div>
+      `).join('')}
+    `).join('');
+  }
+
+  window.onload = init;
+</script>
+</body>
+</html>
