@@ -1,493 +1,154 @@
-const FEE_ITEMS = [
-      {"id": "ministerial-review-application-for-appli", "category": "Ministerial Review for State Bill Housing Projects", "name": "Ministerial Review Application - for applications subject to ministerial Planning review under state law.", "activityType": "fixed", "activity": 3796.0, "filing": true},
-      {"id": "appeal-call-for-review-to-planning-board", "category": "Appeals", "name": "Appeal/Call for Review: Minor Projects - Single Family Residential and Multi-family Residential Less than 5 Units", "activityType": "fixed", "activity": 1432.0, "filing": false},
-      {"id": "appeal-call-for-review-to-planning-board-2", "category": "Appeals", "name": "Appeal/Call for Review: Major Projects - Multi-Family Residential 5 Units or More/Commercial/ Industrial", "activityType": "fixed", "activity": 1432.0, "filing": false},
-      {"id": "amendments-to-the-general-plan-text-or-l", "category": "Zoning Change/General Plan Amendment", "name": "Amendments to the General Plan Text or Land Use Diagram", "activityType": "deposit", "activity": 21328.09, "filing": true},
-      {"id": "property-rezoning-or-zoning-code-amendme", "category": "Zoning Change/General Plan Amendment", "name": "Property Rezoning or Zoning Code Amendment", "activityType": "deposit", "activity": 21328.09, "filing": true},
-      {"id": "design-review-exemption-minor-alteration", "category": "Design Review Exemptions", "name": "Design Review Exemption: Minor Alterations - this fee applies to Minor Alterations under the Design Review Ordinance (AMC 30-37) that are exempt from Design Review pursuant to AMC 30-37.2.b.  Common examples include window and door replacements not removing character- defining features, siding repair and replacement, and other in-kind improvements.  This fee does not apply to work that does not require a building permit as they are not subject to the Design Review Ordinance.", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "design-review-exempt-additions-this-fee-", "category": "Design Review Exemptions", "name": "Design Review Exempt: Additions - this fee applies to building additions and related improvements regulated under the Design Review Ordinance (AMC 30-37) that are exempt from Design Review pursuant to AMC 30-37.2.b. Common examples include single-story rear additions or additions to accessory structures that are less than 1,200 sf in size.", "activityType": "fixed", "activity": 859.0, "filing": true},
-      {"id": "design-review-exemption-wireless-eligibl", "category": "Design Review Exemptions", "name": "Design Review Exemption: Wireless Eligible Facilities Requests and Small Cell Wireless review", "activityType": "fixed", "activity": 573.0, "filing": true},
-      {"id": "design-review-minor-alterations-this-fee", "category": "Design Review", "name": "Design Review: Minor Alterations - this fee applies to alterations involving minor changes in floor area or the building footprint on the ground floor that is less than 50 sf in area.  Common examples include porches, stairwells, windows, stairs, doors, water heater closets, and siding that require Design Review under AMC 30-37.  This fee applies to decks that require Design Review.", "activityType": "fixed", "activity": 859.0, "filing": true},
-      {"id": "design-review-accessory-buildings-struct", "category": "Design Review", "name": "Design Review: Modifications to Accessory Structures - the fee applies to additions and alterations to accessory buildings and structures not exempt from Design Review pursuant to AMC 30-37.2.b.", "activityType": "fixed", "activity": 2005.0, "filing": true},
-      {"id": "design-review-additions-this-fee-applies", "category": "Design Review", "name": "Design Review: Additions - this fee applies to additions and alterations not exempt from Design Review pursuant to AMC 30-37.2.b.  Common examples include second story additions, lifting a building, public facing additions, single story additions over 1,200 sf, and modifications to architecturally unique windows, doors and other features.", "activityType": "fixed", "activity": 3796.0, "filing": true},
-      {"id": "design-review-new-construction-accessory", "category": "Design Review", "name": "Design Review: New Accessory Building", "activityType": "fixed", "activity": 2005.0, "filing": true},
-      {"id": "design-review-new-construction-detached-", "category": "Design Review", "name": "Design Review: New Single-Family Dwelling or Duplex", "activityType": "fixed", "activity": 3796.0, "filing": true},
-      {"id": "design-review-new-construction-multi-fam", "category": "Design Review", "name": "Design Review: New Multi-family 3-9 units", "activityType": "fixed", "activity": 3796.0, "filing": true},
-      {"id": "design-review-new-construction-multi-fam-2", "category": "Design Review", "name": "Design Review: New Multi-family 10+ units", "activityType": "fixed", "activity": 7449.0, "filing": true},
-      {"id": "design-review-new-construction-multi-fam-2", "category": "Design Review", "name": "Design Review: New Non-Residential/Mixed Use Buildings", "activityType": "fixed", "activity": 7449.0, "filing": true},
-      {"id": "changes-to-approved-design-review-review", "category": "Design Review", "name": "Changes to Approved Design Review: Review by Planning Director - minimum fee per hour", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "changes-to-approved-design-review-review-2", "category": "Design Review", "name": "Changes to Approved Design Review: Review by Planning Board", "activityType": "fixed", "activity": 3796.0, "filing": true},
-      {"id": "changes-to-historical-building-study-lis", "category": "Historic Preservation", "name": "Changes to Historical Building Study List (HBSL) /Monument Designation Status - this fee applies to requests to add, delete or modify items on the HBSL and/or the Historic Monument list. The fees includes staff review of any technical historic evaluation reports to be provided by the applicant.", "activityType": "deposit", "activity": 7722.91, "filing": true},
-      {"id": "certificate-of-approval-and-hearing-by-t", "category": "Historic Preservation", "name": "Certificate of Approval and Hearing by the Historical Advisory Board (HAB)", "activityType": "fixed", "activity": 4297.0, "filing": true},
-      {"id": "certificate-of-approval-demolition-of-an", "category": "Historic Preservation", "name": "Certificate of Approval: Demolition of an Accessory Building - on a Listed Property", "activityType": "fixed", "activity": 1432.0, "filing": true},
-      {"id": "certificate-of-approval-with-adu-demo-of", "category": "Historic Preservation", "name": "Certificate of Approval with ADU - Demo of Accessory Building Concurrent with an ADU Application", "activityType": "fixed", "activity": 1003.0, "filing": true},
-      {"id": "certificate-of-approval-removal-of-prote", "category": "Protected Tree Removals", "name": "Certificate of Approval: Removal of Protected Tree - pursuant to AMC 13-21.7.  Note: Requires deposit of Tree Replacement In-Lieu Fee at the time of application.", "activityType": "fixed", "activity": 430.0, "filing": true},
-      {"id": "certificate-of-approval-dead-fallen-tree", "category": "Protected Tree Removals", "name": "Certificate of Approval: Dead/Fallen Tree - this fee applies to trees that are dead or have fallen due to disease or natural disasters and causes.", "activityType": "fixed", "activity": 111.0, "filing": true},
-      {"id": "tree-replacement-in-lieu-fee-per-amc-13-", "category": "Protected Tree Removals", "name": "Tree Replacement In-Lieu Fee per AMC 13-21.7 ($750 per tree) - this fee deposit is refundable upon proof of planting for the replacement tree.", "activityType": "deposit", "activity": 1500.0, "filing": false},
-      {"id": "sign-permit-permanent-signs-every-two-2-", "category": "Sign Permits", "name": "Sign Permit: Permanent Signs - Every Two (2) Signs. Note: Fee is added to the Building Permit Fees invoice.", "activityType": "fixed", "activity": 215.0, "filing": true},
-      {"id": "sign-program-amendment-to-existing-sign-", "category": "Sign Permits", "name": "Sign Program / Amendment to Existing Sign Program - Note: other deposit applies if a public hearing is required", "activityType": "fixed", "activity": 2005.0, "filing": true},
-      {"id": "corporate-street-naming-per-city-street-", "category": "Miscellaneous Fees", "name": "Corporate Street Naming per City Street Naming Policy", "activityType": "fixed", "activity": 8595.0, "filing": true},
-      {"id": "use-permit-or-variance-amendment", "category": "Use Permits or Variance/Amendment", "name": "Use Permit or Variance/Amendment", "activityType": "fixed", "activity": 3223.0, "filing": true},
-      {"id": "public-convenience-and-necessity-pcn-det", "category": "Use Permits or Variance/Amendment", "name": "Public Convenience and Necessity (PCN) Determination", "activityType": "fixed", "activity": 286.0, "filing": true},
-      {"id": "extension-of-approved-entitlement-not-ve", "category": "Time Extension", "name": "Extension of approved entitlement not vested", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "extension-with-public-hearing", "category": "Time Extension", "name": "Extension with Public Hearing", "activityType": "fixed", "activity": 2292.0, "filing": true},
-      {"id": "prelim-planning-only-review", "category": "Preliminary Review Applications", "name": "Basic Prelim: Planning Only Review", "activityType": "fixed", "activity": 430.0, "filing": true},
-      {"id": "each-additional-meeting", "category": "Preliminary Review Applications", "name": "Add on Fee for Each Additional Meeting", "activityType": "fixed", "activity": 286.0, "filing": false},      
-      {"id": "review-by-each-additional-city-departmen", "category": "Preliminary Review Applications", "name": "Add on Fee for Each Additional City Department", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "prelim-review-by-interdepartmental-devel", "category": "Preliminary Review Applications", "name": "Comprehensive Prelim: Review by City Development Review Team (DRT)", "activityType": "fixed", "activity": 2005.0, "filing": true},
-      {"id": "sb-330-and-other-preliminary-application", "category": "Preliminary Review Applications", "name": "SB 330 and other preliminary applications under state law", "activityType": "fixed", "activity": 3868.0, "filing": true},
-      {"id": "master-plan-planned-development-amendmen", "category": "Master Plans, Planned Development (PD), and Development Plans", "name": "Master Plan / Planned Development / Amendment - this fee applies to all development proposals that requires either a Master Plan and/or compliance with the Planned Development regulations of AMC 30-4.13, and/or subsequent amendments.", "activityType": "deposit", "activity": 15405.0, "filing": true},
-      {"id": "development-plan-amendment-this-fee-appl", "category": "Master Plans, Planned Development (PD), and Development Plans", "name": "Development Plan / Amendment - this fee applies to all development proposals subject to submittal of a Development Plan.", "activityType": "deposit", "activity": 15405.0, "filing": true},
-      {"id": "density-bonus-application", "category": "Density Bonus", "name": "Density Bonus Application", "activityType": "deposit", "activity": 5948.28, "filing": true},
-      {"id": "new-development-agreement-or-major-amend", "category": "Development Agreements and Other Project Agreements", "name": "New Development Agreement or Major Amendment", "activityType": "deposit", "activity": 19103.73, "filing": true},
-      {"id": "annual-review-of-development-agreement", "category": "Development Agreements and Other Project Agreements", "name": "Annual Review of Development Agreement", "activityType": "fixed", "activity": 858.0, "filing": true},
-      {"id": "performance-agreement-landscaping-instal", "category": "Development Agreements and Other Project Agreements", "name": "Performance Agreement or Other Recorded Doc - (landscaping installation, maintenance, mitigation monitoring, subdivision improvements, public art, etc.)", "activityType": "deposit", "activity": 5256.38, "filing": true},
-      {"id": "lot-line-adjustment-includes-2-reviews-n", "category": "Subdivision Map Act", "name": "Lot Line Adjustment (includes 2 reviews). - Note: For Public Works review fees see PW Fee Schedule", "activityType": "fixed", "activity": 716.0, "filing": true},
-      {"id": "parcel-map-up-to-4-lots-amendment-note-f", "category": "Subdivision Map Act", "name": "Parcel Map (up to 4 lots) / Amendment. - Note: For Public Works review fees see PW Fee Schedule", "activityType": "deposit", "activity": 10613.93, "filing": true},
-      {"id": "tentative-subdivision-tract-map-5-lots-a", "category": "Subdivision Map Act", "name": "Tentative Subdivision (Tract) Map (>5 lots) / Amendment. - Note: For Public Works review fees see PW Fee Schedule", "activityType": "deposit", "activity": 13292.7, "filing": true},
-      {"id": "non-residential-condo-conversions", "category": "Subdivision Map Act", "name": "Non-Residential Condo Conversions", "activityType": "deposit", "activity": 10613.93, "filing": true},
-      {"id": "residential-condo-conversions", "category": "Subdivision Map Act", "name": "Residential Condo Conversions", "activityType": "deposit", "activity": 10613.93, "filing": true},
-      {"id": "certificate-of-compliance", "category": "Subdivision Map Act", "name": "Certificate of Compliance", "activityType": "fixed", "activity": 716.0, "filing": true},
-      {"id": "ceqa-exemption-with-initial-study-techni", "category": "Environmental Review", "name": "CEQA Exemption with Initial Study or Technical Reports", "activityType": "fixed", "activity": 8595.0, "filing": true},
-      {"id": "environmental-document-is-nd-mnd-plus-ad", "category": "Environmental Review", "name": "Initial Study/Negative Declaration/Mitigated Neg Dec - plus additional deposit based on consultant estimate", "activityType": "deposit", "activity": 15971.48, "filing": true},
-      {"id": "environmental-document-eir-plus-addition", "category": "Environmental Review", "name": "Environmental Impact Report - plus additional deposit based on consultant estimate and direct cost", "activityType": "deposit", "activity": 26685.64, "filing": true},
-      {"id": "other-environmental-review-tasks-not-spe", "category": "Environmental Review", "name": "Other environmental review tasks not specified (per hour)", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "work-live-permit-per-amc-30-15-5-b", "category": "Business License/Zoning Approvals", "name": "Work/Live Permit Per AMC 30-15.5(b)", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "home-occupation-permit", "category": "Business License/Zoning Approvals", "name": "Home Occupation Permit", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "zoning-clearance", "category": "Business License/Zoning Approvals", "name": "Zoning Clearance", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "planning-building-plan-review-minor-proj", "category": "Miscellaneous Fees", "name": "Building Plan Review (Minor Projects)", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "planning-building-plan-review-major-proj", "category": "Miscellaneous Fees", "name": "Building Plan Review (Major Projects)", "activityType": "fixed", "activity": 859.0, "filing": false},
-      {"id": "planning-each-inspection", "category": "Miscellaneous Fees", "name": "Planning Inspection (each inspection)", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "zoning-verification-letter-city-letter-w", "category": "Zoning Determinations and Research", "name": "Zoning Verification Letter - City Letter with Zoning Information requiring no property research", "activityType": "fixed", "activity": 214.5, "filing": true},
-      {"id": "zoning-compliance-determination-city-let", "category": "Zoning Determinations and Research", "name": "Zoning Compliance Determination - City letter with zoning information requiring property research, conformance review with approved plans, nonconforming use certificates, and other determinations of compliance with the Zoning Ordinance.  This fee also applies to specified Planning Director approvals per the Zoning Ordinance.", "activityType": "fixed", "activity": 859.0, "filing": true},
-      {"id": "public-hearing-study-sessions-board-comm", "category": "Miscellaneous Fees", "name": "Public Hearing/Study Sessions - Board/Commissions or City Council - This fee applies to public hearings, study sessions, and community meetings held by Boards, Commissions, or the City Council beyond those routinely required as part of the standard review process.", "activityType": "fixed", "activity": 2292.0, "filing": false},
-      {"id": "massage-tech-permit-pursuant-to-amc-6-46", "category": "Miscellaneous Fees", "name": "Massage Tech Permit pursuant to AMC 6-46", "activityType": "fixed", "activity": 143.0, "filing": true},
-      {"id": "planning-services-hourly-rate", "category": "Miscellaneous Fees", "name": "Planning Services Hourly Rate", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "meeting-with-a-project-planner-hourly-ra", "category": "Miscellaneous Fees", "name": "Meeting with a Project Planner Hourly Rate (available upon request)", "activityType": "fixed", "activity": 286.0, "filing": false},
-      {"id": "processing-fee-for-each-recorded-documen", "category": "Miscellaneous Fees", "name": "Processing Fee for each recorded document", "activityType": "fixed", "activity": 1146.0, "filing": false},
-         ];
-
-    (function ensureUniqueIds(){
-      const seen = Object.create(null);
-      for (let i = 0; i < FEE_ITEMS.length; i++) {
-        let base = FEE_ITEMS[i].id || ("item-" + i);
-        let id = base;
-        let n = 1;
-        while (seen[id]) { id = base + "-" + (++n); }
-        seen[id] = true;
-        FEE_ITEMS[i].id = id;
-      }
-    })();
-
-    const state = {
-      selections: new Set(),
-      valuation: null,
-      cfg: {
-        techRate: 0.06,
-        techBase: "activity+filing",
-        filingAmt: 95,
-        currency: "en-US|USD"
-      },
-      cpfMin: true
-    };
-
-    function fmt(v){
-      const parts = state.cfg.currency.split("|");
-      const loc = parts[0] || "en-US";
-      const cur = parts[1] || "USD";
-      const dec = parts[2] || "2";
-      const opt = { style:"currency", currency:cur };
-      if(dec==="0"){
-        opt.minimumFractionDigits=0;
-        opt.maximumFractionDigits=0;
-      }
-      return new Intl.NumberFormat(loc,opt).format(v||0);
-    }
-
-    function shortName(full){
-      if(!full) return "";
-      const idx = full.indexOf(" - ");
-      return idx === -1 ? full : full.slice(0, idx);
-    }
-
-    function selectedItems(){
-      return FEE_ITEMS.filter(i => state.selections.has(i.id));
-    }
-
-    const NO_ADDON_MISC_IDS = [
-      "public-hearing-study-sessions-board-comm",
-      "planning-services-hourly-rate",
-      "meeting-with-a-project-planner-hourly-ra",
-      "filing-fee",
-      "for-services-requested-of-city-staff-whi",
-      "processing-fee-for-each-recorded-documen"
-    ];
-
-    function isAppealItem(item){
-      return item && item.category === 'Appeals';
-    }
-
-    function isNoAddonItem(item){
-      if(!item) return false;
-      if(isAppealItem(item)) return true;
-      if(item.category === 'Building Permit Plan Check/Site Inspection') return true;
-      if(item.category === 'Miscellaneous Fees' && NO_ADDON_MISC_IDS.indexOf(item.id) >= 0) return true;
-      if(item.id === 'changes-to-approved-design-review-review') return true;
-      if(item.id === 'other-environmental-review-tasks-not-spe') return true;
-      if(item.id === 'each-additional-meeting') return true;
-      if(item.id === 'review-by-each-additional-city-departmen') return true;
-      if(item.id === 'tree-replacement-in-lieu-fee-per-amc-13-') return true;
-      return false;
-    }
-
-    function anyAppealSelected(){
-      return selectedItems().some(i => isAppealItem(i));
-    }
-
-    function anyNonAppealSelected(){
-      return selectedItems().some(i => !isAppealItem(i));
-    }
-
-    const TREE_TRIGGER_IDS = [
-      "certificate-of-approval-removal-of-prote",
-      "certificate-of-approval-dead-fallen-tree"
-    ];
-    const TREE_REPLACEMENT_ID = "tree-replacement-in-lieu-fee-per-amc-13-";
-
-    function slugifyCategory(cat){
-      return (cat || "Other")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "") || "other";
-    }
-
-    function buildFeeList() {
-      const listEl = document.getElementById('feeList');
-      if (!listEl) return;
-      listEl.innerHTML = "";
-
-      const byCat = {};
-      FEE_ITEMS.forEach(item => {
-        const cat = item.category || "Other";
-        if (!byCat[cat]) byCat[cat] = [];
-        byCat[cat].push(item);
-      });
-
-      Object.keys(byCat)
-        .sort((a, b) => {
-          if (a === "Miscellaneous Fees") return 1;
-          if (b === "Miscellaneous Fees") return -1;
-          return a.localeCompare(b);
-        })
-        .forEach(cat => {
-
-          const sectionId = "section-" + slugifyCategory(cat);
-
-          const sectionLi = document.createElement("li");
-          sectionLi.className = "fee-section";
-
-          const toggle = document.createElement("button");
-          toggle.type = "button";
-          toggle.className = "fee-section-toggle";
-          toggle.setAttribute("aria-expanded", "false");
-          toggle.setAttribute("aria-controls", sectionId);
-
-          const titleSpan = document.createElement("span");
-          titleSpan.className = "fee-section-title";
-          titleSpan.textContent = cat;
-
-          const indicator = document.createElement("span");
-          indicator.className = "fee-section-indicator";
-          indicator.setAttribute("aria-hidden", "true");
-          indicator.textContent = "▾";
-
-          toggle.appendChild(titleSpan);
-          toggle.appendChild(indicator);
-
-          const panel = document.createElement("ul");
-          panel.id = sectionId;
-          panel.className = "fee-section-panel";
-          panel.hidden = true;
-          panel.setAttribute("role", "group");
-          panel.setAttribute("aria-label", cat + " fees");
-
-          byCat[cat].forEach(item => {
-            const li = document.createElement("li");
-            li.className = "fee-item";
-            li.dataset.id = item.id;
-
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.id = "fee-" + item.id;
-            checkbox.setAttribute("data-item-id", item.id);
-
-            const label = document.createElement("label");
-            label.className = "fee-item-main";
-            label.htmlFor = checkbox.id;
-
-            const nameSpan = document.createElement("span");
-            nameSpan.className = "fee-item-name";
-            nameSpan.textContent = item.name;
-
-            const amounts = document.createElement("div");
-            amounts.className = "fee-item-amounts";
-
-            const amountLabel = document.createElement("span");
-            amountLabel.className = "fee-amount-label";
-            amountLabel.textContent = item.activityType === "deposit" ? "Deposit" : "Base fee";
-
-            const amountValue = document.createElement("span");
-            amountValue.className = "fee-amount-value";
-            amountValue.textContent = fmt(Number(item.activity) || 0);
-
-            amounts.appendChild(amountLabel);
-            amounts.appendChild(amountValue);
-
-            label.appendChild(nameSpan);
-            label.appendChild(amounts);
-
-            li.appendChild(checkbox);
-            li.appendChild(label);
-            panel.appendChild(li);
-          });
-
-          sectionLi.appendChild(toggle);
-          sectionLi.appendChild(panel);
-          listEl.appendChild(sectionLi);
-
-          toggle.addEventListener("click", function () {
-            const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-            toggle.setAttribute("aria-expanded", String(!isExpanded));
-            panel.hidden = isExpanded;
-            sectionLi.classList.toggle("fee-section-open", !isExpanded);
-          });
-        });
-
-      listEl.querySelectorAll('.fee-item input[type="checkbox"]').forEach(cb => {
-        cb.addEventListener('change', onItemToggle);
-      });
-    }
-
-    function onItemToggle(e){
-      const cb = e.target;
-      const li = cb.closest('.fee-item');
-      if (!li) return;
-      const id = li.dataset.id;
-      const item = FEE_ITEMS.find(x => x.id === id);
-      if (!item) return;
-
-      const isAppeal = isAppealItem(item);
-
-      if (cb.checked) {
-        if (isAppeal && anyNonAppealSelected()) {
-          alert("Appeals must be submitted as a standalone action. Please deselect other entitlements to proceed with an appeal.");
-          cb.checked = false;
-          return;
-        }
-        if (!isAppeal && anyAppealSelected()) {
-          alert("Appeals must be submitted as a standalone action. Please deselect the appeal to proceed with other entitlements.");
-          cb.checked = false;
-          return;
-        }
-
-        state.selections.add(id);
-
-        if (TREE_TRIGGER_IDS.indexOf(id) >= 0) {
-          state.selections.add(TREE_REPLACEMENT_ID);
-          const treeRowCheckbox = document.querySelector('.fee-item[data-id="' + TREE_REPLACEMENT_ID + '"] input[type="checkbox"]');
-          if (treeRowCheckbox && !treeRowCheckbox.checked) {
-            treeRowCheckbox.checked = true;
-          }
-        }
-
-      } else {
-        state.selections.delete(id);
-
-        if (TREE_TRIGGER_IDS.indexOf(id) >= 0) {
-          const anyTriggerStillSelected = TREE_TRIGGER_IDS.some(tid => state.selections.has(tid));
-          if (!anyTriggerStillSelected) {
-            state.selections.delete(TREE_REPLACEMENT_ID);
-            const treeRowCheckbox = document.querySelector('.fee-item[data-id="' + TREE_REPLACEMENT_ID + '"] input[type="checkbox"]');
-            if (treeRowCheckbox && treeRowCheckbox.checked) {
-              treeRowCheckbox.checked = false;
-            }
-          }
-        }
-      }
-
-      recalc();
-    }
-
-    function calcSums(){
-      const items = selectedItems();
-      if (!items.length) {
-        return {count:0,totalActivity:0,filing:0,tech:0,cpf:0,grand:0};
-      }
-
-      const noAddonItems = items.filter(i => isNoAddonItem(i));
-      const addonItems   = items.filter(i => !isNoAddonItem(i));
-
-      const totalActivity = items.reduce((s,i)=> s + (Number(i.activity)||0), 0);
-
-      // If only no-addon items are selected, no filing, tech, or CPF applies
-      if (noAddonItems.length > 0 && addonItems.length === 0) {
-        const filing = 0;
-        const tech   = 0;
-        const cpf    = 0;
-        const grand  = totalActivity;
-        return {count:items.length,totalActivity,filing,tech,cpf,grand};
-      }
-
-      const addonActivity = addonItems.reduce((s,i)=> s + (Number(i.activity)||0), 0);
-
-      const filingApplies = addonItems.some(i => i.filing);
-      const filing = filingApplies ? Number(state.cfg.filingAmt||0) : 0;
-
-      const techBase = state.cfg.techBase === 'activity+filing'
-        ? (addonActivity + filing)
-        : addonActivity;
-
-      const tech = techBase * Number(state.cfg.techRate||0);
-
-      const val = Number(state.valuation || 0);
-      let cpf;
-
-      if (val > 0) {
-        // CPF based on valuation, with $5 minimum if enabled
-        const rawCpf = 0.005 * val;
-        cpf = state.cpfMin ? Math.max(5, rawCpf) : rawCpf;
-      } else {
-        // CPF based on eligible activity, with $5 minimum if enabled
-        const alt = 0.005 * addonActivity;
-        cpf = state.cpfMin ? Math.max(5, alt) : alt;
-      }
-
-      const grand = totalActivity + filing + tech + cpf;
-      return {count:items.length,totalActivity,filing,tech,cpf,grand};
-    }
-
-    function renderSelectedList(){
-      const listEl = document.getElementById("activityList");
-      if (!listEl) return;
-
-      const items = selectedItems();
-      if (!items.length) {
-        listEl.innerHTML = '<div class="activity-empty">No activity fees selected yet.</div>';
-        return;
-      }
-
-      const rows = items.map(i => {
-        const amt = fmt(Number(i.activity) || 0);
-        const sName = shortName(i.name);
-        return '<div class="activity-item">'
-             +   '<div class="activity-name">' + sName + '</div>'
-             +   '<div class="activity-amt">' + amt + '</div>'
-             + '</div>';
-      }).join("");
-
-      listEl.innerHTML = rows;
-    }
-
-    function recalc(){
-      const s = calcSums();
-
-      const activityEl = document.getElementById("activityTotalDisplay");
-      const filingEl   = document.getElementById("filingTotalDisplay");
-      const techEl     = document.getElementById("techFeeDisplay");
-      const cpfEl      = document.getElementById("cpfDisplay");
-      const grandEl    = document.getElementById("grandTotalDisplay");
-      const chip       = document.getElementById("selectedCountChip");
-      const badge      = document.getElementById("summaryBadge");
-      const selList    = document.getElementById("selectedActivitiesList");
-
-      if (activityEl) activityEl.textContent = fmt(s.totalActivity);
-      if (filingEl)   filingEl.textContent   = fmt(s.filing);
-      if (techEl)     techEl.textContent     = fmt(s.tech);
-      if (cpfEl)      cpfEl.textContent      = fmt(s.cpf);
-      if (grandEl)    grandEl.textContent    = fmt(s.grand);
-
-      const liveRegion = document.getElementById("feeTotalsLive");
-      if (liveRegion) {
-        if (s.count === 0) {
-          liveRegion.textContent = "All fees cleared. No activities selected. Estimated total " + fmt(s.grand) + ".";
-        } else {
-          liveRegion.textContent =
-            "Updated totals. Activity fees " + fmt(s.totalActivity) +
-            ", filing fees " + fmt(s.filing) +
-            ", Community Planning Fee " + fmt(s.cpf) +
-            ", Technology Fee " + fmt(s.tech) +
-            ", estimated total " + fmt(s.grand) + ".";
-        }
-      }
-
-
-      if (chip) {
-        chip.textContent = s.count === 1 ? "1 item selected" : s.count + " items selected";
-      }
-
-      if (badge) {
-        if (s.count === 0) {
-          badge.textContent = "No activities selected";
-        } else if (s.count === 1) {
-          badge.textContent = "1 activity selected";
-        } else {
-          badge.textContent = s.count + " activities selected";
-        }
-      }
-
-      if (selList) {
-        selList.innerHTML = "";
-        const items = selectedItems();
-        items.forEach(i => {
-          const li = document.createElement("li");
-          const amount = fmt(Number(i.activity) || 0);
-          li.textContent = shortName(i.name) + " — " + amount;
-          selList.appendChild(li);
-        });
-      }
-
-      renderSelectedList();
-    }
-
-    function init(){
-      buildFeeList();
-
-      var valuationInput = document.getElementById("valuationInput");
-      if (valuationInput) {
-        valuationInput.addEventListener("input", function(e){
-          state.valuation = e.target.value;
-          recalc();
-        });
-      }
-
-      var clearButton = document.getElementById("clearButton");
-      if (clearButton) {
-        clearButton.addEventListener("click", function(){
-          state.selections.clear();
-          document.querySelectorAll('#feeList input[type="checkbox"]').forEach(function(cb){
-            cb.checked = false;
-          });
-          recalc();
-        });
-      }
-
-      var printButton = document.getElementById("printButton");
-      if (printButton) {
-        printButton.addEventListener("click", function () {
-          window.print();
-        });
-      }
-
-      recalc();
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-
-// Enable Enter key toggling only when a checkbox itself is focused (Option A)
-document.addEventListener('keydown', function (e) {
-  const active = document.activeElement;
-  if (e.key === 'Enter' && active && active.type === 'checkbox') {
-    e.preventDefault();
-    active.click();
+:root {
+  --brand:#05204E;
+  --brand-soft:#05204E;
+  --bg:#EFF0F4;
+  --panel:#EFF0F4;
+  --panel-soft:#EFF0F4;
+  --muted:#05204E;
+  --text:#05204E;
+  --border:#C8D8F5;
+}
+
+/* ————— Base & Accessibility ————— */
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0}
+
+body{
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#05204E;
+  background:#EFF0F4;
+  -webkit-font-smoothing:antialiased;
+}
+
+.skip-link{
+  position:absolute;
+  left:.75rem;
+  top:.75rem;
+  padding:.5rem .75rem;
+  background:#ffffff;
+  color:#05204E;
+  border-radius:.25rem;
+  transform:translateY(-200%);
+  transition:transform .15s ease-out;
+  z-index:50;
+}
+.skip-link:focus{transform:translateY(0)}
+
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+}
+
+/* Focus styles */
+button,input,select,textarea,[tabindex]:not([tabindex="-1"]){outline:none}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible{
+  outline:3px solid #facc15;
+  outline-offset:3px;
+}
+
+/* ————— Layout ————— */
+
+.page-shell{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.site-header{padding:.5rem 1.25rem .25rem}
+
+.site-title-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+  align-items:baseline;
+}
+
+h1{
+  margin:0;
+  font-size:1.5rem;
+  color:#05204E;
+}
+
+.version-pill{
+  font-size:.75rem;
+  padding:.15rem .5rem;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:#ffffff;
+  background:#05204E;
+}
+
+.site-tagline{
+  font-size:.85rem;
+  color:#05204E;
+}
+
+main{padding:0 1.25rem}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr);
+  gap:1.25rem;
+}
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+}
+
+.card{
+  background:#EFF0F4;
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:.75rem 1rem;
+}
+
+/* ————— Controls & Lists ————— */
+
+input[type="number"]{
+  background:#EFF0F4;
+  border:1px solid var(--border);
+  border-radius:.6rem;
+  padding:.45rem .75rem;
+  color:#05204E;
+}
+
+.btn{
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:transparent;
+  padding:.4rem .85rem;
+  cursor:pointer;
+  color:#05204E;
+}
+
+.btn-primary{
+  background:#BD1F27;
+  color:#EFF0F4;
+  border-color:transparent;
+  font-weight:600;
+}
+
+/* ————— Print ————— */
+
+@media print{
+  body{
+    background:#ffffff;
+    color:#000000;
   }
-});
+  .card[aria-label="Project information and fee selection"],
+  .action-row{
+    display:none;
+  }
+  .fee-summary-card{
+    position:static;
+    border:1px solid #000000;
+    background:#ffffff;
+  }
+}
