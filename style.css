@@ -1,0 +1,126 @@
+:root {
+  --brand:#38bdf8;
+  --brand-soft:#0ea5e9;
+  --bg:#EFF0F4;
+  --panel:#EFF0F4;
+  --panel-soft:#EFF0F4;
+  --muted:#9ca3af;
+  --text:#05204E;
+  --border:#C8D8F5;
+}
+
+/* ————— Base & Accessibility ————— */
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0}
+
+body{
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+
+.skip-link{
+  position:absolute;
+  left:.75rem;
+  top:.75rem;
+  padding:.5rem .75rem;
+  background:#fff;
+  color:#111827;
+  border-radius:.25rem;
+  transform:translateY(-200%);
+  transition:transform .15s ease-out;
+  z-index:50;
+}
+.skip-link:focus{transform:translateY(0)}
+
+.sr-only{
+  position:absolute;
+  width:1px;height:1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+}
+
+/* Focus styles */
+button,input,select,textarea,[tabindex]:not([tabindex="-1"]){outline:none}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible{
+  outline:3px solid #facc15;
+  outline-offset:3px;
+}
+
+/* ————— Layout ————— */
+
+.page-shell{min-height:100vh;display:flex;flex-direction:column}
+
+.site-header{padding:.5rem 1.25rem .25rem}
+.site-title-row{display:flex;flex-wrap:wrap;gap:.35rem;align-items:baseline}
+
+h1{margin:0;font-size:1.5rem}
+
+.version-pill{
+  font-size:.75rem;
+  padding:.15rem .5rem;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.7);
+}
+
+.site-tagline{font-size:.85rem;color:var(--muted)}
+
+main{padding:0 1.25rem}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr);
+  gap:1.25rem;
+}
+@media (max-width:960px){.layout{grid-template-columns:1fr}}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:.75rem 1rem;
+}
+
+/* ————— Controls & Lists ————— */
+
+input[type="number"]{
+  background:#EFF0F4;
+  border:1px solid var(--border);
+  border-radius:.6rem;
+  padding:.45rem .75rem;
+  color:var(--text);
+}
+
+.btn{
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:transparent;
+  padding:.4rem .85rem;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:#BD1F27;
+  color:#EFF0F4;
+  border-color:transparent;
+  font-weight:600;
+}
+
+/* ————— Print ————— */
+
+@media print{
+  body{background:#fff;color:#000}
+  .card[aria-label="Project information and fee selection"],
+  .action-row{display:none}
+  .fee-summary-card{
+    position:static;
+    border:1px solid #000;
+    background:#fff;
+  }
+}
