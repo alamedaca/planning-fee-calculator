@@ -2,161 +2,1082 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>City of Alameda Planning Fee Calculator</title>
+  <title>City of Alameda Planning Fee Calculator v5.6 - WCAG Compliant (Fee Schedule FY25-26)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --brand: #22498C;
-      --brand-text: #EFF0F4;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --border: #e2e8f0;
-      --accent: #f1f5f9;
+      --brand:#38bdf8;
+      --brand-soft:#0ea5e9;
+      --bg:#020617;
+      --panel:#020617;
+      --panel-soft:#0b1120;
+      --muted:#9ca3af;
+      --text:#e5e7eb;
+      --border:#1f2937;
     }
-    * { box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      margin: 0;
-      padding: 10px;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:0}
+    body{
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:radial-gradient(circle at top,#0b1120 0,#020617 55%,#000 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
     }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .layout { display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
-    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+    .skip-link {
+      position:absolute;
+      left:0.75rem;
+      top:0.75rem;
+      padding:0.5rem 0.75rem;
+      background:#ffffff;
+      color:#111827;
+      border-radius:0.25rem;
+      z-index:50;
+      transform:translateY(-200%);
+      transition:transform 0.15s ease-out;
     }
-    .card-title { font-weight: 700; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; color: #64748b; }
-
-    input[type="number"] {
-      width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem;
-    }
-
-    .fee-list-container { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .fee-category {
-      background: var(--accent); padding: 8px 12px; font-weight: 700; font-size: 0.8rem;
-      text-transform: uppercase; border-bottom: 1px solid var(--border);
-    }
-    .fee-item {
-      display: flex; align-items: flex-start; gap: 10px; padding: 10px 15px;
-      border-bottom: 1px solid var(--border);
-    }
-    .fee-item:hover { background: #f8fafc; }
-    .fee-name { flex: 1; font-size: 0.9rem; cursor: pointer; }
-    .fee-price { font-weight: 700; color: #0f172a; font-size: 0.9rem; }
-
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
-    .total-row {
-      margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border);
-      display: flex; justify-content: space-between; font-weight: 800; font-size: 1.4rem;
+    .skip-link:focus { transform:translateY(0); }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
     }
 
-    .btn {
-      width: 100%; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid var(--border); margin-top: 10px;
+    button,
+    input,
+    select,
+    textarea,
+    [tabindex]:not([tabindex="-1"]) {
+      outline:none;
     }
-    .btn-print { background: var(--brand); color: var(--brand-text); border: none; }
-    .btn-clear { background: white; color: var(--text); }
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:not([tabindex="-1"]):focus-visible {
+      outline:3px solid #facc15;
+      outline-offset:3px;
+    }
+    .page-shell{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    header.site-header{
+      padding:0.5rem 1.25rem 0.25rem;
+    }
+    .site-title-row{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:0.35rem;
+    }
+    h1{
+      font-size:1.5rem;
+      margin:0;
+      letter-spacing:.02em;
+    }
+    .version-pill{
+      font-size:.75rem;
+      padding:.15rem .5rem;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.7);
+      color:#e5e7eb;
+    }
 
-    @media print {
-      .btn, input, .fee-list-container, .card-title { display: none !important; }
-      .layout { display: block; }
-      .card { border: none; box-shadow: none; padding: 0; }
+    .site-tagline{
+      margin-top:.15rem;
+      max-width:none;
+      font-size:.85rem;
+      color:var(--muted);
     }
+
+    @media (min-width: 1024px){
+      .site-tagline{
+        white-space:nowrap;
+      }
+    }
+
+    main#main-content{
+      padding:0 1.25rem 0.25rem;
+      margin-bottom:0;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr);
+      gap:1.25rem;
+      margin-bottom:0.25rem;
+    }
+
+    @media (max-width:960px){
+      .layout{ grid-template-columns:1fr; }
+    }
+
+    .card{
+      background:radial-gradient(circle at top left,#020617 0,#020617 35%,#020617 100%);
+      border-radius:1rem;
+      border:1px solid rgba(148,163,184,.35);
+      padding:0.75rem 1rem 0.5rem;
+      box-shadow:0 18px 45px rgba(15,23,42,.7);
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:0.75rem;
+      margin-bottom:.75rem;
+    }
+    .card-title{
+      font-size:1rem;
+      font-weight:600;
+      letter-spacing:.03em;
+      text-transform:uppercase;
+      color:#e5e7eb;
+    }
+    .card-subtitle{
+      font-size:.8rem;
+      color:var(--muted);
+    }
+    .chip{
+      font-size:.7rem;
+      padding:.1rem .4rem;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.6);
+      color:#e5e7eb;
+    }
+    .field-group{ margin-bottom:1rem; }
+    .field-label{
+      display:block;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:.25rem;
+    }
+    .field-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      align-items:center;
+    }
+    input[type="number"], input[type="text"]{
+      background-color:#020617;
+      border-radius:.6rem;
+      border:1px solid var(--border);
+      padding:.45rem .75rem;
+      color:var(--text);
+      font-size:.9rem;
+      min-width:0;
+      width: 220px;
+    }
+    input[type="number"]::placeholder,
+    input[type="text"]::placeholder{ color:#6b7280; }
+    .helper-text{
+      font-size:.72rem;
+      color:var(--muted);
+      margin-top:.15rem;
+    }
+    .fee-list{
+      margin:0;
+      padding:0;
+      list-style:none;
+      max-height:60vh;
+      overflow:auto;
+      border-radius:.75rem;
+      border:1px solid rgba(31,41,55,.9);
+      background:linear-gradient(to bottom right,rgba(15,23,42,.94),rgba(15,23,42,.98));
+    }
+
+    .fee-section{
+      border-bottom:1px solid rgba(31,41,55,.9);
+    }
+    .fee-section-toggle{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      border:none;
+      padding:.55rem .85rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#9ca3af;
+      cursor:pointer;
+    }
+    .fee-section-title{
+      flex:1;
+    }
+    .fee-section-indicator{
+      font-size:.85rem;
+      margin-left:.5rem;
+      transition:transform .15s ease;
+    }
+    .fee-section-panel{
+      list-style:none;
+      margin:0;
+      padding:0 0 .25rem 0;
+    }
+    .fee-section-open .fee-section-indicator{
+      transform:rotate(180deg);
+    }
+
+    .fee-section-header{
+      padding:.6rem .85rem .35rem;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#9ca3af;
+      border-bottom:1px solid rgba(31,41,55,.9);
+      position:sticky;
+      top:0;
+      backdrop-filter:blur(12px);
+      background:linear-gradient(to bottom,rgba(15,23,42,.96),rgba(15,23,42,.9));
+      z-index:2;
+    }
+    .fee-item{
+      display:flex;
+      gap:.6rem;
+      padding:.55rem .9rem;
+      border-bottom:1px solid rgba(15,23,42,.85);
+      align-items:flex-start;
+    }
+    .fee-item:last-child{ border-bottom:none; }
+    .fee-item input[type="checkbox"]{ margin-top:.1rem; }
+    .fee-item-main{ flex:1; min-width:0; }
+    .fee-item-name{
+      display:block;
+      font-size:.86rem;
+      color:#e5e7eb;
+    }
+    .fee-item-amounts{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      margin-top:.15rem;
+      font-size:.78rem;
+      color:#9ca3af;
+      gap:.5rem;
+    }
+    .fee-amount-label{ opacity:.85; }
+    .fee-amount-value{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .fee-summary-card{
+      position:sticky;
+      top:1rem;
+      display:flex;
+      flex-direction:column;
+    }
+    .totals-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:.45rem .75rem;
+      font-size:.85rem;
+      margin-top:.75rem;
+    }
+    .totals-label{ color:#9ca3af; }
+    .totals-value{
+      text-align:right;
+      font-variant-numeric:tabular-nums;
+    }
+    .totals-grand{
+      margin-top:.75rem;
+      padding-top:.75rem;
+      border-top:1px solid rgba(55,65,81,.9);
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:.5rem;
+    }
+    .totals-grand-label{
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .totals-grand-value{
+      font-size:1.15rem;
+      font-weight:700;
+      font-variant-numeric:tabular-nums;
+    }
+    .badge-soft{
+      font-size:.7rem;
+      padding:.1rem .45rem;
+      border-radius:999px;
+      background:rgba(56,189,248,.15);
+      color:#7dd3fc;
+    }
+    .selected-activities{
+      margin-top:.75rem;
+      padding-top:.5rem;
+      border-top:1px solid rgba(55,65,81,.5);
+      max-height:180px;
+      overflow-y:auto;
+    }
+    .selected-activities-title{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#9ca3af;
+      margin-bottom:.25rem;
+    }
+    .selected-list{
+      margin:0;
+      padding-left:1.1rem;
+      font-size:.78rem;
+      color:#e5e7eb;
+    }
+    .selected-list li+li{ margin-top:.1rem; }
+
+    /* Selected activity list directly under Total activity fees row */
+    .activity-list{
+      margin:4px 0 4px 8px;
+      padding-left:10px;
+      border-left:1px solid rgba(255,255,255,.12);
+      font-size:12px;
+      max-height:180px;
+      overflow-y:auto;
+      grid-column:1 / -1;
+    }
+    .activity-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .activity-name{
+      flex:1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .activity-amt{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .activity-empty{
+      color:var(--muted);
+      font-style:italic;
+    }
+
+    .action-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-top:1rem;
+    }
+    .btn{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.6);
+      background:transparent;
+      color:#e5e7eb;
+      font-size:.8rem;
+      padding:.4rem .85rem;
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:transparent;
+      background:linear-gradient(to right,#22c55e,#16a34a);
+      color:#022c22;
+      font-weight:600;
+    }
+    .btn:hover{ filter:brightness(1.05); }
+    .notes-list{
+      margin:.5rem 0 0;
+      padding-left:1.1rem;
+      font-size:.75rem;
+      color:#9ca3af;
+    }
+    .notes-list li+li{ margin-top:.15rem; }
+
+    footer.site-footer{
+      margin-top:0.50rem;
+      padding:0.15rem 1.25rem 0.2rem;
+      font-size:.72rem;
+      color:#6b7280;
+    }
+    .site-footer{
+      margin-top:0 !important;
+    }
+
+    @media print{
+  body{
+    background:#ffffff !important;
+    color:#000000 !important;
+  }
+
+  /* Show header and footer in print */
+  header.site-header,
+  footer.site-footer{
+    display:block !important;
+    color:#000000 !important;
+    background:#ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide only the project info card and action buttons */
+  .card[aria-label="Project information and fee selection"],
+  .action-row{
+    display:none !important;
+  }
+
+  .page-shell{
+    display:block;
+    padding:0.5in;
+  }
+
+  /* Fee estimate prints cleanly */
+  .fee-summary-card{
+    position:static;
+    box-shadow:none;
+    border-radius:0;
+    background:#ffffff !important;
+    border:1px solid #000000;
+    color:#000000;
+  }
+
+  .totals-label,
+  .totals-value,
+  .totals-grand-label,
+  .totals-grand-value,
+  .selected-activities-title,
+  .selected-list,
+  .notes-list{
+    color:#000000 !important;
+  }
+
+  /* Expand list areas in print */
+  .activity-list,
+  .selected-activities{
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  /* Avoid awkward page breaks */
+  .fee-summary-card,
+  .selected-activities,
+  .activity-item,
+  .selected-list li{
+    page-break-inside:avoid;
+  }
+}
   </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="layout">
-    <div>
-      <section class="card">
-        <div class="card-title">1. Project Valuation</div>
-        <input type="number" id="valuation" placeholder="Enter Valuation ($)" oninput="calculate()">
-        <p style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">
-          The Community Planning Fee is 0.5% of valuation, or 0.5% of activity fees (min $5) if blank.
-        </p>
-      </section>
-
-      <section class="card">
-        <div class="card-title">2. Activity Fees</div>
-        <div id="feeList" class="fee-list-container">
-           <button class="btn" onclick="init()">Click to Load Activities</button>
-        </div>
-      </section>
-    </div>
-
-    <aside>
-      <div class="card">
-        <div class="card-title">Fee Estimate</div>
-        <div class="summary-row"><span>Activities:</span> <strong id="resActivity">$0.00</strong></div>
-        <div class="summary-row"><span>Filing Fee:</span> <strong id="resFiling">$0.00</strong></div>
-        <div class="summary-row"><span>Comm. Planning:</span> <strong id="resCpf">$0.00</strong></div>
-        <div class="summary-row"><span>Tech Fee (6%):</span> <strong id="resTech">$0.00</strong></div>
-        <div class="total-row"><span>Total:</span> <span id="resTotal">$0.00</span></div>
-        <button class="btn btn-print" onclick="window.print()">Print Fee Estimate</button>
-        <button class="btn btn-clear" onclick="location.reload()">Clear All</button>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="page-shell">
+    <header class="site-header" role="banner">
+      <div class="site-title-row">
+        <h1>City of Alameda Planning Fee Calculator</h1>
+        <span class="version-pill">v5.6 · FY 25-26 · WCAG Compliant</span>
       </div>
-    </aside>
+      <p class="site-tagline" id="feeCalcDesc">
+        Use this tool to estimate Planning and Zoning entitlement application fees. 
+      </p>
+    </header>
+
+    <main id="main-content" role="main" aria-describedby="feeCalcDesc">
+      <div class="layout">
+        <section class="card" aria-label="Project information and fee selection">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Project information and activities</div>
+              <div class="card-subtitle">Select the activities that apply to your project.</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="valuationInput">Project valuation for determining Community Planning Fee</label>
+            <div class="field-row">
+              <span style="font-size:.9rem;color:#9ca3af;">$</span>
+              <input id="valuationInput" name="valuationInput" type="number" min="0" step="1" inputmode="decimal"
+                     placeholder="Enter construction valuation (optional)" aria-describedby="valuationHelp" />
+            </div>
+            <p class="helper-text" id="valuationHelp">
+              If construction valuation is unknown at the entitlement stage, leave this blank.
+              The Community Planning Fee will be based on 0.5% of eligible activity fees, with a minimum of $5.
+            </p>
+          </div>
+
+          <div class="field-group" aria-label="Available planning fees and deposits">
+            <div class="field-label" style="margin-bottom:.35rem;">Activity fees and deposits</div>
+            <ul class="fee-list" id="feeList" role="list"></ul>
+          </div>
+        </section>
+
+        <aside class="card fee-summary-card" aria-label="Fee estimate">
+          <div class="card-header">
+            <div>
+              <div class="card-title" id="fee-estimate-heading">Fee estimate</div>
+              <div class="card-subtitle">Based on your selected activities.</div>
+            </div>
+            <span class="chip" id="selectedCountChip">0 items selected</span>
+          </div>
+
+          <section id="totals-live-region"
+                   aria-labelledby="fee-estimate-heading">
+            <div id="feeTotalsLive" class="sr-only" role="status" aria-live="polite"></div>
+            <div class="totals-grid">
+              <div class="totals-label">Total activity fees</div>
+              <div class="totals-value" id="activityTotalDisplay">$0.00</div>
+
+              <!-- Activity list now sits directly under Total activity fees and spans both columns -->
+              <div id="activityList" class="activity-list" aria-label="Activity fee details"></div>
+
+              <div class="totals-label">Total filing fees</div>
+              <div class="totals-value" id="filingTotalDisplay">$0.00</div>
+
+              <div class="totals-label">Community Planning Fee (0.5%)</div>
+              <div class="totals-value" id="cpfDisplay">$0.00</div>
+
+              <div class="totals-label">Technology Fee (6%)</div>
+              <div class="totals-value" id="techFeeDisplay">$0.00</div>
+            </div>
+
+            <div class="totals-grand">
+              <div class="totals-grand-label">Estimated total</div>
+              <div class="totals-grand-value" id="grandTotalDisplay">$0.00</div>
+            </div>
+
+            <div class="selected-activities" aria-label="Selected activities">
+              <div class="selected-activities-title">Selected activities</div>
+              <ul id="selectedActivitiesList" class="selected-list"></ul>
+            </div>
+
+            <div style="margin-top:.35rem;">
+              <span class="badge-soft" id="summaryBadge">No activities selected</span>
+            </div>
+          </section>
+
+          <div class="action-row" aria-label="Actions">
+            <button type="button" class="btn" id="clearButton">Clear selections</button>
+            <button type="button" class="btn btn-primary" id="printButton">Print fee estimate</button>
+          </div>
+<br>
+<div class="notes-header">Notes:</div>
+          <ul class="notes-list" aria-label="Important notes">
+          
+<li>Estimates are for general information only and may not include all fees.</li>
+            <li>Some projects may require additional review or outside agency fees.</li>
+            <li>Deposits are billed against actual staff time and consultant costs.</li>
+	    <li>Fees for unlisted services are based on the departmental hourly rate plus any actual costs.</li>
+	    <li>Filing Fee is $95</li>
+	  </ul>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      For assistance with this tool or help understanding your fees, contact the Planning Division at planning@alamedaca.gov or 510-747-6805 during regular business hours.
+    </footer>
   </div>
-</div>
 
-<script>
-  const FEE_DATA = [
-    { cat: "Ministerial", name: "Ministerial Review Application", amt: 3796, filing: true },
-    { cat: "Appeals", name: "Appeal: Minor Projects", amt: 1432, filing: false },
-    { cat: "Design Review", name: "DR Exemption: Minor Alterations", amt: 143, filing: true },
-    { cat: "Design Review", name: "New Single-Family Dwelling", amt: 3796, filing: true },
-    { cat: "Historic", name: "Certificate of Approval", amt: 4297, filing: true },
-    { cat: "Trees", name: "Removal of Protected Tree", amt: 430, filing: true },
-    { cat: "Use Permits", name: "Use Permit Amendment", amt: 3223, filing: true }
-  ];
+  <script>
+    const FEE_ITEMS = [
+      {"id": "ministerial-review-application-for-appli", "category": "Ministerial Review for State Bill Housing Projects", "name": "Ministerial Review Application - for applications subject to ministerial Planning review under state law.", "activityType": "fixed", "activity": 3796.0, "filing": true},
+      {"id": "appeal-call-for-review-to-planning-board", "category": "Appeals", "name": "Appeal/Call for Review: Minor Projects - Single Family Residential and Multi-family Residential Less than 5 Units", "activityType": "fixed", "activity": 1432.0, "filing": false},
+      {"id": "appeal-call-for-review-to-planning-board-2", "category": "Appeals", "name": "Appeal/Call for Review: Major Projects - Multi-Family Residential 5 Units or More/Commercial/ Industrial", "activityType": "fixed", "activity": 1432.0, "filing": false},
+      {"id": "amendments-to-the-general-plan-text-or-l", "category": "Zoning Change/General Plan Amendment", "name": "Amendments to the General Plan Text or Land Use Diagram", "activityType": "deposit", "activity": 21328.09, "filing": true},
+      {"id": "property-rezoning-or-zoning-code-amendme", "category": "Zoning Change/General Plan Amendment", "name": "Property Rezoning or Zoning Code Amendment", "activityType": "deposit", "activity": 21328.09, "filing": true},
+      {"id": "design-review-exemption-minor-alteration", "category": "Design Review Exemptions", "name": "Design Review Exemption: Minor Alterations - this fee applies to Minor Alterations under the Design Review Ordinance (AMC 30-37) that are exempt from Design Review pursuant to AMC 30-37.2.b.  Common examples include window and door replacements not removing character- defining features, siding repair and replacement, and other in-kind improvements.  This fee does not apply to work that does not require a building permit as they are not subject to the Design Review Ordinance.", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "design-review-exempt-additions-this-fee-", "category": "Design Review Exemptions", "name": "Design Review Exempt: Additions - this fee applies to building additions and related improvements regulated under the Design Review Ordinance (AMC 30-37) that are exempt from Design Review pursuant to AMC 30-37.2.b. Common examples include single-story rear additions or additions to accessory structures that are less than 1,200 sf in size.", "activityType": "fixed", "activity": 859.0, "filing": true},
+      {"id": "design-review-exemption-wireless-eligibl", "category": "Design Review Exemptions", "name": "Design Review Exemption: Wireless Eligible Facilities Requests and Small Cell Wireless review", "activityType": "fixed", "activity": 573.0, "filing": true},
+      {"id": "design-review-minor-alterations-this-fee", "category": "Design Review", "name": "Design Review: Minor Alterations - this fee applies to alterations involving minor changes in floor area or the building footprint on the ground floor that is less than 50 sf in area.  Common examples include porches, stairwells, windows, stairs, doors, water heater closets, and siding that require Design Review under AMC 30-37.  This fee applies to decks that require Design Review.", "activityType": "fixed", "activity": 859.0, "filing": true},
+      {"id": "design-review-accessory-buildings-struct", "category": "Design Review", "name": "Design Review: Modifications to Accessory Structures - the fee applies to additions and alterations to accessory buildings and structures not exempt from Design Review pursuant to AMC 30-37.2.b.", "activityType": "fixed", "activity": 2005.0, "filing": true},
+      {"id": "design-review-additions-this-fee-applies", "category": "Design Review", "name": "Design Review: Additions - this fee applies to additions and alterations not exempt from Design Review pursuant to AMC 30-37.2.b.  Common examples include second story additions, lifting a building, public facing additions, single story additions over 1,200 sf, and modifications to architecturally unique windows, doors and other features.", "activityType": "fixed", "activity": 3796.0, "filing": true},
+      {"id": "design-review-new-construction-accessory", "category": "Design Review", "name": "Design Review: New Accessory Building", "activityType": "fixed", "activity": 2005.0, "filing": true},
+      {"id": "design-review-new-construction-detached-", "category": "Design Review", "name": "Design Review: New Single-Family Dwelling or Duplex", "activityType": "fixed", "activity": 3796.0, "filing": true},
+      {"id": "design-review-new-construction-multi-fam", "category": "Design Review", "name": "Design Review: New Multi-family 3-9 units", "activityType": "fixed", "activity": 3796.0, "filing": true},
+      {"id": "design-review-new-construction-multi-fam-2", "category": "Design Review", "name": "Design Review: New Multi-family 10+ units", "activityType": "fixed", "activity": 7449.0, "filing": true},
+      {"id": "design-review-new-construction-multi-fam-2", "category": "Design Review", "name": "Design Review: New Non-Residential/Mixed Use Buildings", "activityType": "fixed", "activity": 7449.0, "filing": true},
+      {"id": "changes-to-approved-design-review-review", "category": "Design Review", "name": "Changes to Approved Design Review: Review by Planning Director - minimum fee per hour", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "changes-to-approved-design-review-review-2", "category": "Design Review", "name": "Changes to Approved Design Review: Review by Planning Board", "activityType": "fixed", "activity": 3796.0, "filing": true},
+      {"id": "changes-to-historical-building-study-lis", "category": "Historic Preservation", "name": "Changes to Historical Building Study List (HBSL) /Monument Designation Status - this fee applies to requests to add, delete or modify items on the HBSL and/or the Historic Monument list. The fees includes staff review of any technical historic evaluation reports to be provided by the applicant.", "activityType": "deposit", "activity": 7722.91, "filing": true},
+      {"id": "certificate-of-approval-and-hearing-by-t", "category": "Historic Preservation", "name": "Certificate of Approval and Hearing by the Historical Advisory Board (HAB)", "activityType": "fixed", "activity": 4297.0, "filing": true},
+      {"id": "certificate-of-approval-demolition-of-an", "category": "Historic Preservation", "name": "Certificate of Approval: Demolition of an Accessory Building - on a Listed Property", "activityType": "fixed", "activity": 1432.0, "filing": true},
+      {"id": "certificate-of-approval-with-adu-demo-of", "category": "Historic Preservation", "name": "Certificate of Approval with ADU - Demo of Accessory Building Concurrent with an ADU Application", "activityType": "fixed", "activity": 1003.0, "filing": true},
+      {"id": "certificate-of-approval-removal-of-prote", "category": "Protected Tree Removals", "name": "Certificate of Approval: Removal of Protected Tree - pursuant to AMC 13-21.7.  Note: Requires deposit of Tree Replacement In-Lieu Fee at the time of application.", "activityType": "fixed", "activity": 430.0, "filing": true},
+      {"id": "certificate-of-approval-dead-fallen-tree", "category": "Protected Tree Removals", "name": "Certificate of Approval: Dead/Fallen Tree - this fee applies to trees that are dead or have fallen due to disease or natural disasters and causes.", "activityType": "fixed", "activity": 111.0, "filing": true},
+      {"id": "tree-replacement-in-lieu-fee-per-amc-13-", "category": "Protected Tree Removals", "name": "Tree Replacement In-Lieu Fee per AMC 13-21.7 ($750 per tree) - this fee deposit is refundable upon proof of planting for the replacement tree.", "activityType": "deposit", "activity": 1500.0, "filing": false},
+      {"id": "sign-permit-permanent-signs-every-two-2-", "category": "Sign Permits", "name": "Sign Permit: Permanent Signs - Every Two (2) Signs. Note: Fee is added to the Building Permit Fees invoice.", "activityType": "fixed", "activity": 215.0, "filing": true},
+      {"id": "sign-program-amendment-to-existing-sign-", "category": "Sign Permits", "name": "Sign Program / Amendment to Existing Sign Program - Note: other deposit applies if a public hearing is required", "activityType": "fixed", "activity": 2005.0, "filing": true},
+      {"id": "corporate-street-naming-per-city-street-", "category": "Miscellaneous Fees", "name": "Corporate Street Naming per City Street Naming Policy", "activityType": "fixed", "activity": 8595.0, "filing": true},
+      {"id": "use-permit-or-variance-amendment", "category": "Use Permits or Variance/Amendment", "name": "Use Permit or Variance/Amendment", "activityType": "fixed", "activity": 3223.0, "filing": true},
+      {"id": "public-convenience-and-necessity-pcn-det", "category": "Use Permits or Variance/Amendment", "name": "Public Convenience and Necessity (PCN) Determination", "activityType": "fixed", "activity": 286.0, "filing": true},
+      {"id": "extension-of-approved-entitlement-not-ve", "category": "Time Extension", "name": "Extension of approved entitlement not vested", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "extension-with-public-hearing", "category": "Time Extension", "name": "Extension with Public Hearing", "activityType": "fixed", "activity": 2292.0, "filing": true},
+      {"id": "prelim-planning-only-review", "category": "Preliminary Review Applications", "name": "Basic Prelim: Planning Only Review", "activityType": "fixed", "activity": 430.0, "filing": true},
+      {"id": "each-additional-meeting", "category": "Preliminary Review Applications", "name": "Add on Fee for Each Additional Meeting", "activityType": "fixed", "activity": 286.0, "filing": false},      
+      {"id": "review-by-each-additional-city-departmen", "category": "Preliminary Review Applications", "name": "Add on Fee for Each Additional City Department", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "prelim-review-by-interdepartmental-devel", "category": "Preliminary Review Applications", "name": "Comprehensive Prelim: Review by City Development Review Team (DRT)", "activityType": "fixed", "activity": 2005.0, "filing": true},
+      {"id": "sb-330-and-other-preliminary-application", "category": "Preliminary Review Applications", "name": "SB 330 and other preliminary applications under state law", "activityType": "fixed", "activity": 3868.0, "filing": true},
+      {"id": "master-plan-planned-development-amendmen", "category": "Master Plans, Planned Development (PD), and Development Plans", "name": "Master Plan / Planned Development / Amendment - this fee applies to all development proposals that requires either a Master Plan and/or compliance with the Planned Development regulations of AMC 30-4.13, and/or subsequent amendments.", "activityType": "deposit", "activity": 15405.0, "filing": true},
+      {"id": "development-plan-amendment-this-fee-appl", "category": "Master Plans, Planned Development (PD), and Development Plans", "name": "Development Plan / Amendment - this fee applies to all development proposals subject to submittal of a Development Plan.", "activityType": "deposit", "activity": 15405.0, "filing": true},
+      {"id": "density-bonus-application", "category": "Density Bonus", "name": "Density Bonus Application", "activityType": "deposit", "activity": 5948.28, "filing": true},
+      {"id": "new-development-agreement-or-major-amend", "category": "Development Agreements and Other Project Agreements", "name": "New Development Agreement or Major Amendment", "activityType": "deposit", "activity": 19103.73, "filing": true},
+      {"id": "annual-review-of-development-agreement", "category": "Development Agreements and Other Project Agreements", "name": "Annual Review of Development Agreement", "activityType": "fixed", "activity": 858.0, "filing": true},
+      {"id": "performance-agreement-landscaping-instal", "category": "Development Agreements and Other Project Agreements", "name": "Performance Agreement or Other Recorded Doc - (landscaping installation, maintenance, mitigation monitoring, subdivision improvements, public art, etc.)", "activityType": "deposit", "activity": 5256.38, "filing": true},
+      {"id": "lot-line-adjustment-includes-2-reviews-n", "category": "Subdivision Map Act", "name": "Lot Line Adjustment (includes 2 reviews). - Note: For Public Works review fees see PW Fee Schedule", "activityType": "fixed", "activity": 716.0, "filing": true},
+      {"id": "parcel-map-up-to-4-lots-amendment-note-f", "category": "Subdivision Map Act", "name": "Parcel Map (up to 4 lots) / Amendment. - Note: For Public Works review fees see PW Fee Schedule", "activityType": "deposit", "activity": 10613.93, "filing": true},
+      {"id": "tentative-subdivision-tract-map-5-lots-a", "category": "Subdivision Map Act", "name": "Tentative Subdivision (Tract) Map (>5 lots) / Amendment. - Note: For Public Works review fees see PW Fee Schedule", "activityType": "deposit", "activity": 13292.7, "filing": true},
+      {"id": "non-residential-condo-conversions", "category": "Subdivision Map Act", "name": "Non-Residential Condo Conversions", "activityType": "deposit", "activity": 10613.93, "filing": true},
+      {"id": "residential-condo-conversions", "category": "Subdivision Map Act", "name": "Residential Condo Conversions", "activityType": "deposit", "activity": 10613.93, "filing": true},
+      {"id": "certificate-of-compliance", "category": "Subdivision Map Act", "name": "Certificate of Compliance", "activityType": "fixed", "activity": 716.0, "filing": true},
+      {"id": "ceqa-exemption-with-initial-study-techni", "category": "Environmental Review", "name": "CEQA Exemption with Initial Study or Technical Reports", "activityType": "fixed", "activity": 8595.0, "filing": true},
+      {"id": "environmental-document-is-nd-mnd-plus-ad", "category": "Environmental Review", "name": "Initial Study/Negative Declaration/Mitigated Neg Dec - plus additional deposit based on consultant estimate", "activityType": "deposit", "activity": 15971.48, "filing": true},
+      {"id": "environmental-document-eir-plus-addition", "category": "Environmental Review", "name": "Environmental Impact Report - plus additional deposit based on consultant estimate and direct cost", "activityType": "deposit", "activity": 26685.64, "filing": true},
+      {"id": "other-environmental-review-tasks-not-spe", "category": "Environmental Review", "name": "Other environmental review tasks not specified (per hour)", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "work-live-permit-per-amc-30-15-5-b", "category": "Business License/Zoning Approvals", "name": "Work/Live Permit Per AMC 30-15.5(b)", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "home-occupation-permit", "category": "Business License/Zoning Approvals", "name": "Home Occupation Permit", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "zoning-clearance", "category": "Business License/Zoning Approvals", "name": "Zoning Clearance", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "planning-building-plan-review-minor-proj", "category": "Miscellaneous Fees", "name": "Building Plan Review (Minor Projects)", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "planning-building-plan-review-major-proj", "category": "Miscellaneous Fees", "name": "Building Plan Review (Major Projects)", "activityType": "fixed", "activity": 859.0, "filing": false},
+      {"id": "planning-each-inspection", "category": "Miscellaneous Fees", "name": "Planning Inspection (each inspection)", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "zoning-verification-letter-city-letter-w", "category": "Zoning Determinations and Research", "name": "Zoning Verification Letter - City Letter with Zoning Information requiring no property research", "activityType": "fixed", "activity": 214.5, "filing": true},
+      {"id": "zoning-compliance-determination-city-let", "category": "Zoning Determinations and Research", "name": "Zoning Compliance Determination - City letter with zoning information requiring property research, conformance review with approved plans, nonconforming use certificates, and other determinations of compliance with the Zoning Ordinance.  This fee also applies to specified Planning Director approvals per the Zoning Ordinance.", "activityType": "fixed", "activity": 859.0, "filing": true},
+      {"id": "public-hearing-study-sessions-board-comm", "category": "Miscellaneous Fees", "name": "Public Hearing/Study Sessions - Board/Commissions or City Council - This fee applies to public hearings, study sessions, and community meetings held by Boards, Commissions, or the City Council beyond those routinely required as part of the standard review process.", "activityType": "fixed", "activity": 2292.0, "filing": false},
+      {"id": "massage-tech-permit-pursuant-to-amc-6-46", "category": "Miscellaneous Fees", "name": "Massage Tech Permit pursuant to AMC 6-46", "activityType": "fixed", "activity": 143.0, "filing": true},
+      {"id": "planning-services-hourly-rate", "category": "Miscellaneous Fees", "name": "Planning Services Hourly Rate", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "meeting-with-a-project-planner-hourly-ra", "category": "Miscellaneous Fees", "name": "Meeting with a Project Planner Hourly Rate (available upon request)", "activityType": "fixed", "activity": 286.0, "filing": false},
+      {"id": "processing-fee-for-each-recorded-documen", "category": "Miscellaneous Fees", "name": "Processing Fee for each recorded document", "activityType": "fixed", "activity": 1146.0, "filing": false},
+         ];
 
-  function calculate() {
-    const list = document.getElementById('feeList');
-    const selected = Array.from(list.querySelectorAll('input:checked'));
-    const actTotal = selected.reduce((sum, el) => sum + parseFloat(el.dataset.amt), 0);
-    const filTotal = selected.some(el => el.dataset.filing === "true") ? 95 : 0;
-    const val = parseFloat(document.getElementById('valuation').value) || 0;
-    
-    let cpf = 0;
-    if (val > 0) { cpf = val * 0.005; } 
-    else if (actTotal > 0) { cpf = Math.max(5, actTotal * 0.005); }
+    (function ensureUniqueIds(){
+      const seen = Object.create(null);
+      for (let i = 0; i < FEE_ITEMS.length; i++) {
+        let base = FEE_ITEMS[i].id || ("item-" + i);
+        let id = base;
+        let n = 1;
+        while (seen[id]) { id = base + "-" + (++n); }
+        seen[id] = true;
+        FEE_ITEMS[i].id = id;
+      }
+    })();
 
-    const techTotal = (actTotal + filTotal) * 0.06;
-    const grandTotal = actTotal + filTotal + cpf + techTotal;
+    const state = {
+      selections: new Set(),
+      valuation: null,
+      cfg: {
+        techRate: 0.06,
+        techBase: "activity+filing",
+        filingAmt: 95,
+        currency: "en-US|USD"
+      },
+      cpfMin: true
+    };
 
-    document.getElementById('resActivity').innerText = `$${actTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-    document.getElementById('resFiling').innerText = `$${filTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-    document.getElementById('resCpf').innerText = `$${cpf.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-    document.getElementById('resTech').innerText = `$${techTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-    document.getElementById('resTotal').innerText = `$${grandTotal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    function fmt(v){
+      const parts = state.cfg.currency.split("|");
+      const loc = parts[0] || "en-US";
+      const cur = parts[1] || "USD";
+      const dec = parts[2] || "2";
+      const opt = { style:"currency", currency:cur };
+      if(dec==="0"){
+        opt.minimumFractionDigits=0;
+        opt.maximumFractionDigits=0;
+      }
+      return new Intl.NumberFormat(loc,opt).format(v||0);
+    }
+
+    function shortName(full){
+      if(!full) return "";
+      const idx = full.indexOf(" - ");
+      return idx === -1 ? full : full.slice(0, idx);
+    }
+
+    function selectedItems(){
+      return FEE_ITEMS.filter(i => state.selections.has(i.id));
+    }
+
+    const NO_ADDON_MISC_IDS = [
+      "public-hearing-study-sessions-board-comm",
+      "planning-services-hourly-rate",
+      "meeting-with-a-project-planner-hourly-ra",
+      "filing-fee",
+      "for-services-requested-of-city-staff-whi",
+      "processing-fee-for-each-recorded-documen"
+    ];
+
+    function isAppealItem(item){
+      return item && item.category === 'Appeals';
+    }
+
+    function isNoAddonItem(item){
+      if(!item) return false;
+      if(isAppealItem(item)) return true;
+      if(item.category === 'Building Permit Plan Check/Site Inspection') return true;
+      if(item.category === 'Miscellaneous Fees' && NO_ADDON_MISC_IDS.indexOf(item.id) >= 0) return true;
+      if(item.id === 'changes-to-approved-design-review-review') return true;
+      if(item.id === 'other-environmental-review-tasks-not-spe') return true;
+      if(item.id === 'each-additional-meeting') return true;
+      if(item.id === 'review-by-each-additional-city-departmen') return true;
+      if(item.id === 'tree-replacement-in-lieu-fee-per-amc-13-') return true;
+      return false;
+    }
+
+    function anyAppealSelected(){
+      return selectedItems().some(i => isAppealItem(i));
+    }
+
+    function anyNonAppealSelected(){
+      return selectedItems().some(i => !isAppealItem(i));
+    }
+
+    const TREE_TRIGGER_IDS = [
+      "certificate-of-approval-removal-of-prote",
+      "certificate-of-approval-dead-fallen-tree"
+    ];
+    const TREE_REPLACEMENT_ID = "tree-replacement-in-lieu-fee-per-amc-13-";
+
+    function slugifyCategory(cat){
+      return (cat || "Other")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "other";
+    }
+
+    function buildFeeList() {
+      const listEl = document.getElementById('feeList');
+      if (!listEl) return;
+      listEl.innerHTML = "";
+
+      const byCat = {};
+      FEE_ITEMS.forEach(item => {
+        const cat = item.category || "Other";
+        if (!byCat[cat]) byCat[cat] = [];
+        byCat[cat].push(item);
+      });
+
+      Object.keys(byCat)
+        .sort((a, b) => {
+          if (a === "Miscellaneous Fees") return 1;
+          if (b === "Miscellaneous Fees") return -1;
+          return a.localeCompare(b);
+        })
+        .forEach(cat => {
+
+          const sectionId = "section-" + slugifyCategory(cat);
+
+          const sectionLi = document.createElement("li");
+          sectionLi.className = "fee-section";
+
+          const toggle = document.createElement("button");
+          toggle.type = "button";
+          toggle.className = "fee-section-toggle";
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.setAttribute("aria-controls", sectionId);
+
+          const titleSpan = document.createElement("span");
+          titleSpan.className = "fee-section-title";
+          titleSpan.textContent = cat;
+
+          const indicator = document.createElement("span");
+          indicator.className = "fee-section-indicator";
+          indicator.setAttribute("aria-hidden", "true");
+          indicator.textContent = "▾";
+
+          toggle.appendChild(titleSpan);
+          toggle.appendChild(indicator);
+
+          const panel = document.createElement("ul");
+          panel.id = sectionId;
+          panel.className = "fee-section-panel";
+          panel.hidden = true;
+          panel.setAttribute("role", "group");
+          panel.setAttribute("aria-label", cat + " fees");
+
+          byCat[cat].forEach(item => {
+            const li = document.createElement("li");
+            li.className = "fee-item";
+            li.dataset.id = item.id;
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = "fee-" + item.id;
+            checkbox.setAttribute("data-item-id", item.id);
+
+            const label = document.createElement("label");
+            label.className = "fee-item-main";
+            label.htmlFor = checkbox.id;
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "fee-item-name";
+            nameSpan.textContent = item.name;
+
+            const amounts = document.createElement("div");
+            amounts.className = "fee-item-amounts";
+
+            const amountLabel = document.createElement("span");
+            amountLabel.className = "fee-amount-label";
+            amountLabel.textContent = item.activityType === "deposit" ? "Deposit" : "Base fee";
+
+            const amountValue = document.createElement("span");
+            amountValue.className = "fee-amount-value";
+            amountValue.textContent = fmt(Number(item.activity) || 0);
+
+            amounts.appendChild(amountLabel);
+            amounts.appendChild(amountValue);
+
+            label.appendChild(nameSpan);
+            label.appendChild(amounts);
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+            panel.appendChild(li);
+          });
+
+          sectionLi.appendChild(toggle);
+          sectionLi.appendChild(panel);
+          listEl.appendChild(sectionLi);
+
+          toggle.addEventListener("click", function () {
+            const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+            toggle.setAttribute("aria-expanded", String(!isExpanded));
+            panel.hidden = isExpanded;
+            sectionLi.classList.toggle("fee-section-open", !isExpanded);
+          });
+        });
+
+      listEl.querySelectorAll('.fee-item input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', onItemToggle);
+      });
+    }
+
+    function onItemToggle(e){
+      const cb = e.target;
+      const li = cb.closest('.fee-item');
+      if (!li) return;
+      const id = li.dataset.id;
+      const item = FEE_ITEMS.find(x => x.id === id);
+      if (!item) return;
+
+      const isAppeal = isAppealItem(item);
+
+      if (cb.checked) {
+        if (isAppeal && anyNonAppealSelected()) {
+          alert("Appeals must be submitted as a standalone action. Please deselect other entitlements to proceed with an appeal.");
+          cb.checked = false;
+          return;
+        }
+        if (!isAppeal && anyAppealSelected()) {
+          alert("Appeals must be submitted as a standalone action. Please deselect the appeal to proceed with other entitlements.");
+          cb.checked = false;
+          return;
+        }
+
+        state.selections.add(id);
+
+        if (TREE_TRIGGER_IDS.indexOf(id) >= 0) {
+          state.selections.add(TREE_REPLACEMENT_ID);
+          const treeRowCheckbox = document.querySelector('.fee-item[data-id="' + TREE_REPLACEMENT_ID + '"] input[type="checkbox"]');
+          if (treeRowCheckbox && !treeRowCheckbox.checked) {
+            treeRowCheckbox.checked = true;
+          }
+        }
+
+      } else {
+        state.selections.delete(id);
+
+        if (TREE_TRIGGER_IDS.indexOf(id) >= 0) {
+          const anyTriggerStillSelected = TREE_TRIGGER_IDS.some(tid => state.selections.has(tid));
+          if (!anyTriggerStillSelected) {
+            state.selections.delete(TREE_REPLACEMENT_ID);
+            const treeRowCheckbox = document.querySelector('.fee-item[data-id="' + TREE_REPLACEMENT_ID + '"] input[type="checkbox"]');
+            if (treeRowCheckbox && treeRowCheckbox.checked) {
+              treeRowCheckbox.checked = false;
+            }
+          }
+        }
+      }
+
+      recalc();
+    }
+
+    function calcSums(){
+      const items = selectedItems();
+      if (!items.length) {
+        return {count:0,totalActivity:0,filing:0,tech:0,cpf:0,grand:0};
+      }
+
+      const noAddonItems = items.filter(i => isNoAddonItem(i));
+      const addonItems   = items.filter(i => !isNoAddonItem(i));
+
+      const totalActivity = items.reduce((s,i)=> s + (Number(i.activity)||0), 0);
+
+      // If only no-addon items are selected, no filing, tech, or CPF applies
+      if (noAddonItems.length > 0 && addonItems.length === 0) {
+        const filing = 0;
+        const tech   = 0;
+        const cpf    = 0;
+        const grand  = totalActivity;
+        return {count:items.length,totalActivity,filing,tech,cpf,grand};
+      }
+
+      const addonActivity = addonItems.reduce((s,i)=> s + (Number(i.activity)||0), 0);
+
+      const filingApplies = addonItems.some(i => i.filing);
+      const filing = filingApplies ? Number(state.cfg.filingAmt||0) : 0;
+
+      const techBase = state.cfg.techBase === 'activity+filing'
+        ? (addonActivity + filing)
+        : addonActivity;
+
+      const tech = techBase * Number(state.cfg.techRate||0);
+
+      const val = Number(state.valuation || 0);
+      let cpf;
+
+      if (val > 0) {
+        // CPF based on valuation, with $5 minimum if enabled
+        const rawCpf = 0.005 * val;
+        cpf = state.cpfMin ? Math.max(5, rawCpf) : rawCpf;
+      } else {
+        // CPF based on eligible activity, with $5 minimum if enabled
+        const alt = 0.005 * addonActivity;
+        cpf = state.cpfMin ? Math.max(5, alt) : alt;
+      }
+
+      const grand = totalActivity + filing + tech + cpf;
+      return {count:items.length,totalActivity,filing,tech,cpf,grand};
+    }
+
+    function renderSelectedList(){
+      const listEl = document.getElementById("activityList");
+      if (!listEl) return;
+
+      const items = selectedItems();
+      if (!items.length) {
+        listEl.innerHTML = '<div class="activity-empty">No activity fees selected yet.</div>';
+        return;
+      }
+
+      const rows = items.map(i => {
+        const amt = fmt(Number(i.activity) || 0);
+        const sName = shortName(i.name);
+        return '<div class="activity-item">'
+             +   '<div class="activity-name">' + sName + '</div>'
+             +   '<div class="activity-amt">' + amt + '</div>'
+             + '</div>';
+      }).join("");
+
+      listEl.innerHTML = rows;
+    }
+
+    function recalc(){
+      const s = calcSums();
+
+      const activityEl = document.getElementById("activityTotalDisplay");
+      const filingEl   = document.getElementById("filingTotalDisplay");
+      const techEl     = document.getElementById("techFeeDisplay");
+      const cpfEl      = document.getElementById("cpfDisplay");
+      const grandEl    = document.getElementById("grandTotalDisplay");
+      const chip       = document.getElementById("selectedCountChip");
+      const badge      = document.getElementById("summaryBadge");
+      const selList    = document.getElementById("selectedActivitiesList");
+
+      if (activityEl) activityEl.textContent = fmt(s.totalActivity);
+      if (filingEl)   filingEl.textContent   = fmt(s.filing);
+      if (techEl)     techEl.textContent     = fmt(s.tech);
+      if (cpfEl)      cpfEl.textContent      = fmt(s.cpf);
+      if (grandEl)    grandEl.textContent    = fmt(s.grand);
+
+      const liveRegion = document.getElementById("feeTotalsLive");
+      if (liveRegion) {
+        if (s.count === 0) {
+          liveRegion.textContent = "All fees cleared. No activities selected. Estimated total " + fmt(s.grand) + ".";
+        } else {
+          liveRegion.textContent =
+            "Updated totals. Activity fees " + fmt(s.totalActivity) +
+            ", filing fees " + fmt(s.filing) +
+            ", Community Planning Fee " + fmt(s.cpf) +
+            ", Technology Fee " + fmt(s.tech) +
+            ", estimated total " + fmt(s.grand) + ".";
+        }
+      }
+
+
+      if (chip) {
+        chip.textContent = s.count === 1 ? "1 item selected" : s.count + " items selected";
+      }
+
+      if (badge) {
+        if (s.count === 0) {
+          badge.textContent = "No activities selected";
+        } else if (s.count === 1) {
+          badge.textContent = "1 activity selected";
+        } else {
+          badge.textContent = s.count + " activities selected";
+        }
+      }
+
+      if (selList) {
+        selList.innerHTML = "";
+        const items = selectedItems();
+        items.forEach(i => {
+          const li = document.createElement("li");
+          const amount = fmt(Number(i.activity) || 0);
+          li.textContent = shortName(i.name) + " — " + amount;
+          selList.appendChild(li);
+        });
+      }
+
+      renderSelectedList();
+    }
+
+    function init(){
+      buildFeeList();
+
+      var valuationInput = document.getElementById("valuationInput");
+      if (valuationInput) {
+        valuationInput.addEventListener("input", function(e){
+          state.valuation = e.target.value;
+          recalc();
+        });
+      }
+
+      var clearButton = document.getElementById("clearButton");
+      if (clearButton) {
+        clearButton.addEventListener("click", function(){
+          state.selections.clear();
+          document.querySelectorAll('#feeList input[type="checkbox"]').forEach(function(cb){
+            cb.checked = false;
+          });
+          recalc();
+        });
+      }
+
+      var printButton = document.getElementById("printButton");
+      if (printButton) {
+        printButton.addEventListener("click", function () {
+          window.print();
+        });
+      }
+
+      recalc();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+// Enable Enter key toggling only when a checkbox itself is focused (Option A)
+document.addEventListener('keydown', function (e) {
+  const active = document.activeElement;
+  if (e.key === 'Enter' && active && active.type === 'checkbox') {
+    e.preventDefault();
+    active.click();
   }
-
-  function init() {
-    const list = document.getElementById('feeList');
-    const categories = [...new Set(FEE_DATA.map(f => f.cat))];
-    list.innerHTML = categories.map(cat => `
-      <div class="fee-category">${cat}</div>
-      ${FEE_DATA.filter(f => f.cat === cat).map((f, i) => `
-        <div class="fee-item">
-          <input type="checkbox" id="f-${cat}-${i}" data-amt="${f.amt}" data-filing="${f.filing}" onchange="calculate()">
-          <label class="fee-name" for="f-${cat}-${i}">${f.name}</label>
-          <span class="fee-price">$${f.amt.toLocaleString()}</span>
-        </div>
-      `).join('')}
-    `).join('');
-  }
-
-  window.onload = init;
-</script>
+});
+  </script>
 </body>
 </html>
