@@ -169,7 +169,7 @@
       width: 220px;
     }
     input[type="number"]::placeholder,
-    input[type="text"]::placeholder{ color:var(--muted); }
+    input[type="text"]::placeholder{ color:var(--text); }
     .helper-text{
       font-size:.72rem;
       color:var(--text);
@@ -182,6 +182,7 @@
       max-height:60vh;
       overflow:auto;
       border-radius:.75rem;
+      color:var(--text); 
       border:1px solid var(--border);
       background:var(--panel);
     }
