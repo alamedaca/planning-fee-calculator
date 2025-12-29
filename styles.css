@@ -16,7 +16,7 @@
       -webkit-font-smoothing:antialiased;
     }
 
-  
+/* Ignore, this is for future use -- not currently applied 
     h1{
       font-size:2rem;
       margin:0;
@@ -46,7 +46,7 @@
       color:var(--text);
 
     }
-
+*/
     .skip-link {
       position:absolute;
       left:0.75rem;
