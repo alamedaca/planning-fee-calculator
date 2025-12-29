@@ -10,33 +10,34 @@
 
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <div class="page-shell">
+  
+  <p class="page-shell">
     <header class="site-header" role="banner">
-      <div class="site-title-row">
+      <p class="site-title-row">
         <h1>City of Alameda Planning Fee Calculator</h1>
         <!--<span class="version-pill"> WCAG 2.1 AA Compliant</span> This is not good for longevity-->
-      </div>
+      </p>
       <p class="site-tagline" id="feeCalcDesc">
         Use this tool to estimate Planning and Zoning entitlement application fees.
       </p>
     </header>
 
     <main id="main-content" role="main" aria-describedby="feeCalcDesc">
-      <div class="layout">
+      <p class="layout">
         <section class="card" aria-label="Project information and fee selection">
-          <div class="card-header">
-            <div>
+          <p class="card-header">
+            <p>
               <h2 class="card-title">Project information and activities</h2>
-              <div class="card-subtitle">Select the activities that apply to your project.</div>
-            </div>
-          </div>
+              <!-- <p class="card-subtitle"> -->
+               <p> Select the activities that apply to your project.</p>
+            </p>
+          </p>
  
-          <div class="field-group">
+          <p class="field-group">
             <label class="field-label" for="valuationInput">
               Project valuation for determining Community Planning Fee
             </label>
-            <div class="field-row">
+            <p class="field-row">
               <span></span>>$</span>
               <input
                 id="valuationInput"
@@ -48,78 +49,78 @@
                 placeholder="Enter construction valuation (optional)"
                 aria-describedby="valuationHelp"
               />
-            </div>
+            </p>
             <p class="helper-text" id="valuationHelp">
               If construction valuation is unknown at the entitlement stage, leave this blank.
               The Community Planning Fee will be based on 0.5% of eligible activity fees,
               with a minimum of $5.
             </p>
-          </div>
+          </p>
 
-          <div class="field-group" aria-label="Available planning fees and deposits">
-            <div class="field-label" style="margin-bottom:.35rem;">
+          <p class="field-group" aria-label="Available planning fees and deposits">
+            <p class="field-label" style="margin-bottom:.35rem;">
               Activity fees and deposits
-            </div>
+            </p>
             <ul class="fee-list" id="feeList" role="list"></ul>
-          </div>
+          </p>
         </section>
 
-        <div class="card fee-summary-card" aria-label="Fee estimate">
-          <div class="card-header">
-            <div>
+        <p class="card fee-summary-card" aria-label="Fee estimate">
+          <p class="card-header">
+            <p>
               <h2 class="card-title" id="fee-estimate-heading">Fee estimate</h>
-              <div class="card-subtitle">Based on your selected activities.</div>
-            </div>
+              <p class="card-subtitle">Based on your selected activities.</p>
+            </p>
             <span class="chip" id="selectedCountChip">0 items selected</span>
-          </div>
+          </p>
 
           <section aria-labelledby="fee-estimate-heading">
-            <div id="feeTotalsLive" class="sr-only" role="status" aria-live="polite"></div>
+            <p id="feeTotalsLive" class="sr-only" role="status" aria-live="polite"></p>
 
-            <div class="totals-grid">
-              <div class="totals-label">Total activity fees</div>
-              <div class="totals-value" id="activityTotalDisplay">$0.00</div>
+            <p class="totals-grid">
+              <p class="totals-label">Total activity fees</p>
+              <p class="totals-value" id="activityTotalDisplay">$0.00</p>
 
-              <div id="activityList" class="activity-list"
-                   aria-label="Activity fee details"></div>
+              <p id="activityList" class="activity-list"
+                   aria-label="Activity fee details"></p>
 
-              <div class="totals-label">Total filing fees</div>
-              <div class="totals-value" id="filingTotalDisplay">$0.00</div>
+              <p class="totals-label">Total filing fees</p>
+              <p class="totals-value" id="filingTotalDisplay">$0.00</p>
 
-              <div class="totals-label">Community Planning Fee (0.5%)</div>
-              <div class="totals-value" id="cpfDisplay">$0.00</div>
+              <p class="totals-label">Community Planning Fee (0.5%)</p>
+              <p class="totals-value" id="cpfDisplay">$0.00</p>
 
-              <div class="totals-label">Technology Fee (6%)</div>
-              <div class="totals-value" id="techFeeDisplay">$0.00</div>
-            </div>
+              <p class="totals-label">Technology Fee (6%)</p>
+              <p class="totals-value" id="techFeeDisplay">$0.00</p>
+            </p>
 
-            <div class="totals-grand">
-              <div class="totals-grand-label">Estimated total</div>
-              <div class="totals-grand-value" id="grandTotalDisplay">$0.00</div>
-            </div>
+            <p class="totals-grand">
+              <p class="totals-grand-label">Estimated total</p>
+              <p class="totals-grand-value" id="grandTotalDisplay">$0.00</p>
+            </p>
 
-            <div class="selected-activities" aria-label="Selected activities">
-              <div class="selected-activities-title">Selected activities</div>
+            <p class="selected-activities" aria-label="Selected activities">
+              <p class="selected-activities-title">Selected activities</p>
               <ul id="selectedActivitiesList" class="selected-list"></ul>
-            </div>
+            </p>
 
-            <div style="margin-top:.35rem;">
+            <p style="margin-top:.35rem;">
               <span class="badge-soft" id="summaryBadge">No activities selected</span>
-            </div>
+            </p>
           </section>
 
-          <div class="action-row" aria-label="Actions">
+          <p class="action-row" aria-label="Actions">
             <button type="button" class="btn" id="clearButton">
               Clear selections
             </button>
             <button type="button" class="btn btn-primary" id="printButton">
               Print fee estimate
             </button>
-          </div>
+          </p>
 
           <br>
 
-          <div class="notes-header">Notes:</div>
+          <p class="notes-header">Notes:</p>
           <ul class="notes-list" aria-label="Important notes">
             <li>Estimates are for general information only and may not include all fees.</li>
             <li>Some projects may require additional review or outside agency fees.</li>
@@ -127,8 +128,8 @@
             <li>Fees for unlisted services are based on the departmental hourly rate plus any actual costs.</li>
             <li>Filing Fee is $95</li>
           </ul>
-        </div>
-      </div>
+        </p>
+      </p>
     </main>
 
     <footer class="site-footer" role="contentinfo">
@@ -136,7 +137,7 @@
       contact the Planning Division at planning@alamedaca.gov
       or 510-747-6805 during regular business hours.
     </footer>
-  </div>
+  </p>
 
   <script src="script.js" defer></script>
 </body>
