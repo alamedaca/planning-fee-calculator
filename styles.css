@@ -1,5 +1,5 @@
   :root {
-      --brand:#38bdf8;
+      --brand:#7b9eff;
       --brand-soft:#0ea5e9;
       --bg:#EFF0F4;
       --panel:#EFF0F4;
@@ -201,7 +201,7 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color:#9ca3af;
+      color: var(--text);
       cursor:pointer;
     }
     .fee-section-title{
@@ -226,7 +226,7 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color:var(--muted);
+      color:var(--text);
       border-bottom:1px solid var(--border);
       position:sticky;
       top:0;
