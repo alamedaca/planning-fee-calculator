@@ -74,6 +74,15 @@
       margin:0;
       letter-spacing:.02em;
     }
+
+    h3{
+      display:block;
+      font-size:1rem;
+      font: weight 600px;
+      text-transform:uppercase;
+      color:var(--text);
+      margin-bottom:.35rem;
+    }
     .version-pill{
       font-size:.75rem;
       padding:.15rem .5rem;
@@ -142,14 +151,15 @@
       color:var(--text);
     }
     .field-group{ margin-bottom:1rem; }
-    .field-label{
+   /* .field-label{
       display:block;
-      font-size:.8rem;
+      font-size:1rem;
+      font: weight 600px;
       text-transform:uppercase;
-      letter-spacing:.08em;
       color:var(--text);
-      margin-bottom:.25rem;
+      margin-bottom:.35rem;
     }
+      */
     .field-row{
       display:flex;
       flex-wrap:wrap;
@@ -301,7 +311,7 @@
     }
     .badge-soft{
       font-size:.7rem;
-      padding:.1rem .45rem;
+      padding:.1rem 1rem;
       border-radius:999px;
       background:var(--brand-soft);
       color: var(--text);
