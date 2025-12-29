@@ -1,6 +1,6 @@
   :root {
       --brand:#7b9eff;
-      --brand-soft:#0ea5e9;
+      --brand-soft:#83b4ff;
       --bg:#EFF0F4;
       --panel:#EFF0F4;
       --panel-soft:#EFF0F4;
@@ -206,6 +206,7 @@
     }
     .fee-section-title{
       flex:1;
+      color:var(--text)
     }
     .fee-section-indicator{
       font-size:.85rem;
