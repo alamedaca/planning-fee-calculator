@@ -15,7 +15,7 @@
     <header class="site-header" role="banner">
       <div class="site-title-row">
         <h1>City of Alameda Planning Fee Calculator</h1>
-        <span class="version-pill">v5.6 · FY 25-26 · WCAG Compliant</span>
+        <!--<span class="version-pill"> WCAG 2.1 AA Compliant</span> This is not good for longevity-->
       </div>
       <p class="site-tagline" id="feeCalcDesc">
         Use this tool to estimate Planning and Zoning entitlement application fees.
@@ -27,17 +27,17 @@
         <section class="card" aria-label="Project information and fee selection">
           <div class="card-header">
             <div>
-              <div class="card-title">Project information and activities</div>
+              <h2 class="card-title">Project information and activities</h2>
               <div class="card-subtitle">Select the activities that apply to your project.</div>
             </div>
           </div>
-
+ 
           <div class="field-group">
             <label class="field-label" for="valuationInput">
               Project valuation for determining Community Planning Fee
             </label>
             <div class="field-row">
-              <span style="font-size:.9rem;color:#9ca3af;">$</span>
+              <span></span>>$</span>
               <input
                 id="valuationInput"
                 name="valuationInput"
@@ -67,7 +67,7 @@
         <aside class="card fee-summary-card" aria-label="Fee estimate">
           <div class="card-header">
             <div>
-              <div class="card-title" id="fee-estimate-heading">Fee estimate</div>
+              <h2 class="card-title" id="fee-estimate-heading">Fee estimate</div>
               <div class="card-subtitle">Based on your selected activities.</div>
             </div>
             <span class="chip" id="selectedCountChip">0 items selected</span>
@@ -103,7 +103,7 @@
               <ul id="selectedActivitiesList" class="selected-list"></ul>
             </div>
 
-            <div style="margin-top:.35rem;">
+            <div style="margin-top:.35 rem;">
               <span class="badge-soft" id="summaryBadge">No activities selected</span>
             </div>
           </section>
