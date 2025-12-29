@@ -1,6 +1,6 @@
   :root {
-      --brand:#7b9eff;
-      --brand-soft:#83b4ff;
+      --brand:#38bdf8;
+      --brand-soft:#0ea5e9;
       --bg:#EFF0F4;
       --panel:#EFF0F4;
       --panel-soft:#EFF0F4;
@@ -169,7 +169,7 @@
       width: 220px;
     }
     input[type="number"]::placeholder,
-    input[type="text"]::placeholder{ color:var(--text); }
+    input[type="text"]::placeholder{ color:var(--muted); }
     .helper-text{
       font-size:.72rem;
       color:var(--text);
@@ -182,7 +182,6 @@
       max-height:60vh;
       overflow:auto;
       border-radius:.75rem;
-      color:var(--text); 
       border:1px solid var(--border);
       background:var(--panel);
     }
@@ -202,12 +201,11 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color: var(--text);
+      color:#9ca3af;
       cursor:pointer;
     }
     .fee-section-title{
       flex:1;
-      color:var(--text)
     }
     .fee-section-indicator{
       font-size:.85rem;
@@ -228,7 +226,7 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color:var(--text);
+      color:var(--muted);
       border-bottom:1px solid var(--border);
       position:sticky;
       top:0;
