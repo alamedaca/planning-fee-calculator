@@ -125,10 +125,10 @@
     }
     .card-title{
       font-size:1rem;
-      font-weight:600;
+      font-weight:600; 
       letter-spacing:.03em;
       text-transform:uppercase;
-      color:#e5e7eb;
+      color:var(--text);
     }
     .card-subtitle{
       font-size:.8rem;
@@ -147,7 +147,7 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.08em;
-      color:var(--muted);
+      color:var(--text);
       margin-bottom:.25rem;
     }
     .field-row{
@@ -388,8 +388,7 @@
     .notes-list{
       margin:.5rem 0 0;
       padding-left:1.1rem;
-      font-size:.75rem;
-      color:#9ca3af;
+      font-size:.75rem;;
     }
     .notes-list li+li{ margin-top:.15rem; }
 
@@ -397,7 +396,7 @@
       margin-top:0.50rem;
       padding:0.15rem 1.25rem 0.2rem;
       font-size:.72rem;
-      color:#6b7280;
+      color:var(--muted);
     }
     .site-footer{
       margin-top:0 !important;
