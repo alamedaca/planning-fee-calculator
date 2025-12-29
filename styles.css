@@ -9,7 +9,7 @@
       --border:#C8D8F5;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;padding:0}
+    html,body{height:100%;margin:1.6rem;padding:1.6rem}
     body{
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
@@ -483,3 +483,4 @@
     page-break-inside:avoid;
   }
 }
+
