@@ -15,6 +15,46 @@
       color:var(--text);
       -webkit-font-smoothing:antialiased;
     }
+  
+    p{
+      font: size 1rem;
+      margin:0;
+      color:var(--text);
+      line-height: 1.6; 
+      margin-top:.15rem;
+      margin-bottom: ;
+    }
+  
+    h1{
+      font-size:2rem;
+      margin:0;
+      font-weight:600;
+      letter-spacing:.02em;
+      color:var(--text)
+    }
+    
+    h2{
+      font-size:1.5rem;
+      font-weight:600; 
+      letter-spacing:.02em;
+      text-transform:uppercase;
+      color:var(--text);
+    }
+
+    h3{
+      font-size:1rem;
+      font-weight:600; 
+      letter-spacing:.02em;
+      color:var(--text);
+    }
+    
+    h4{
+      font: size 1rem; 
+      letter-spacing:.02em;
+      color:var(--text);
+
+    }
+
     .skip-link {
       position:absolute;
       left:0.75rem;
@@ -69,11 +109,8 @@
       align-items:baseline;
       gap:0.35rem;
     }
-    h1{
-      font-size:1.5rem;
-      margin:0;
-      letter-spacing:.02em;
-    }
+
+
     .version-pill{
       font-size:.75rem;
       padding:.15rem .5rem;
@@ -85,7 +122,7 @@
     .site-tagline{
       margin-top:.15rem;
       max-width:none;
-      font-size:.85rem;
+      font-size:1rem;
       color:var(--text);
     }
 
@@ -124,7 +161,7 @@
       margin-bottom:.75rem;
     }
     .card-title{
-      font-size:1rem;
+      font-size:1.25rem;
       font-weight:600; 
       letter-spacing:.03em;
       text-transform:uppercase;
@@ -199,7 +236,7 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      font-size:.8rem;
+      font-size:1rem;
       text-transform:uppercase;
       letter-spacing:.12em;
       color: var(--text);
@@ -293,7 +330,7 @@
       gap:.5rem;
     }
     .totals-grand-label{
-      font-size:.9rem;
+      font-size:1rem;
       font-weight:600;
     }
     .totals-grand-value{
@@ -316,16 +353,14 @@
       overflow-y:auto;
     }
     .selected-activities-title{
-      font-size:.8rem;
       text-transform:uppercase;
-      letter-spacing:.08em;
       color:var(--text);
       margin-bottom:.25rem;
     }
     .selected-list{
       margin:0;
-      padding-left:1.1rem;
-      font-size:.78rem;
+      padding-left:1rem;
+      font-size: 1rem;
       color:var(--text);
     }
     .selected-list li+li{ margin-top:.1rem; }
