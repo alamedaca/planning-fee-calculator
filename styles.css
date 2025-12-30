@@ -80,6 +80,7 @@
       font: size 1.5rem;
       font: weight 600px
       color:var(--text);
+      text-transform:none;
       margin-bottom:.35rem;
     }
 
