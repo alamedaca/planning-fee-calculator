@@ -47,10 +47,10 @@
     }
 
     p{
-      margin-bottom:1em;
+      margin-bottom:.35em;
       color:var(--text);
       font-size:1rem;
-      line-height:1.5rem;
+      line-height:.5rem;
     }
 
 
@@ -171,6 +171,7 @@
       color:var(--text);
     }
     .field-group{ margin-bottom:1rem; }
+
     .field-label{
       display:block;
       font-size:.8rem;
