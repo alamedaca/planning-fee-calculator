@@ -48,7 +48,7 @@
     p{
       color:var(--text);
       font-size:1rem;
-      line-height:.5rem;
+      line-height:1.5rem;
       margin:0;
     }
 
@@ -494,3 +494,4 @@
     page-break-inside:avoid;
   }
 }
+
