@@ -9,7 +9,7 @@
       --border:#C8D8F5;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:1.6rem;padding:1.6rem}
+    html,body{height:100%;margin:0;padding:0}
     body{
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
@@ -81,7 +81,8 @@
       font: weight 600px;
       text-transform:uppercase;
       color:var(--text);
-      margin-bottom:.35rem;}
+      margin-bottom:.35rem;
+    }
 
     h3{
       display:block;
@@ -91,6 +92,14 @@
       color:var(--text);
       margin-bottom:.35rem;
     }
+
+    p{
+      margin:0;
+      color:var(--text);
+      font-size:1rem;
+      line-height:1.5rem;
+    }
+    
     .version-pill{
       font-size:.75rem;
       padding:.15rem .5rem;
@@ -147,11 +156,13 @@
       text-transform:uppercase;
       color:var(--text);
     }
-*/
+
     .card-subtitle{
       font-size:.8rem;
-      color:var(--muted);
+      color:var(--);
     }
+
+*/
     .chip{
       font-size:.7rem;
       padding:.1rem .4rem;
@@ -483,4 +494,3 @@
     page-break-inside:avoid;
   }
 }
-
