@@ -26,8 +26,7 @@
       font: size 1.5rem;
       font: weight 600px
       color:var(--text);
-      margin-bottom:.35rem;
-    }
+}
 
     h3{
       display:block;
@@ -499,3 +498,4 @@
     page-break-inside:avoid;
   }
 }
+
