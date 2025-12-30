@@ -80,6 +80,7 @@
       font: size 1.5rem;
       font: weight 600px
       color:var(--text);
+      text-transform:none;
       margin-bottom:.35rem;
     }
 
@@ -87,14 +88,6 @@
       display:block;
       font: size 1.25rem;
       font: weight 600px;
-      text-transform:uppercase;
-      color:var(--text);
-      margin-bottom:.35rem;
-    }
-
-    h4{
-      display:block;
-      font: size 1rem;
       text-transform:uppercase;
       color:var(--text);
       margin-bottom:.35rem;
@@ -501,4 +494,3 @@
     page-break-inside:avoid;
   }
 }
-
