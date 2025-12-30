@@ -1,143 +1,504 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>City of Alameda Planning Fee Calculator v5.6 - WCAG Compliant (Fee Schedule FY25-26)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  :root {
+      --brand:#38bdf8;
+      --brand-soft:#0ea5e9;
+      --bg:#EFF0F4;
+      --panel:#EFF0F4;
+      --panel-soft:#EFF0F4;
+      --muted:#767d8a; /* secondary text color */
+      --text:#05204E;
+      --border:#C8D8F5;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:0}
+    body{
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+    .skip-link {
+      position:absolute;
+      left:0.75rem;
+      top:0.75rem;
+      padding:0.5rem 0.75rem;
+      background:#ffffff;
+      color:#111827;
+      border-radius:0.25rem;
+      z-index:50;
+      transform:translateY(-200%);
+      transition:transform 0.15s ease-out;
+    }
+    .skip-link:focus { transform:translateY(0); }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
 
-  <link rel="stylesheet" href="styles.css" />
-</head>
+    button,
+    input,
+    select,
+    textarea,
+    [tabindex]:not([tabindex="-1"]) {
+      outline:none;
+    }
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:not([tabindex="-1"]):focus-visible {
+      outline:3px solid #facc15;
+      outline-offset:3px;
+    }
+    .page-shell{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    header.site-header{
+      padding:0.5rem 1.25rem 0.25rem;
+    }
+    .site-title-row{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:0.35rem;
+    }
+    h1{
+      font-size:2rem;
+      margin:0;
+      letter-spacing:.02em;
+    }
 
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+    h2{
+      display:block;
+      font: size 1.5rem;
+      font: weight 600px
+      color:var(--text);
+      margin-bottom:.35rem;
+    }
 
-  <div class="page-shell">
-    <header class="site-header" role="banner">
-      <div class="site-title-row">
-        <h1>City of Alameda Planning Fee Calculator</h1>
-        <!--<span class="version-pill"> WCAG 2.1 AA Compliant</span> This is not good for longevity-->
-      </div>
-      <p class="site-tagline" id="feeCalcDesc">
-        Use this tool to estimate Planning and Zoning entitlement application fees.
-      </p>
-    </header>
+    h3{
+      display:block;
+      font: size 1.25rem;
+      font: weight 600px;
+      text-transform:uppercase;
+      color:var(--text);
+      margin-bottom:.35rem;
+    }
 
-    <main id="main-content" role="main" aria-describedby="feeCalcDesc">
-      <div class="layout">
-        <section class="card" aria-label="Project information and fee selection">
-          <div class="card-header">
-            <div>
-              <h2 class="card-title">Project information and activities</h2>
-              <p>Select the activities that apply to your project.</p>
-            </div>
-          </div>
- 
-          <div class="field-group">
-            <h3><label class="field-label" for="valuationInput">
-              Project valuation for determining Community Planning Fee
-            </label></h3> 
-            <div class="field-row">
-              <span></span>$</span>
-              <input
-                id="valuationInput"
-                name="valuationInput"
-                type="number"
-                min="0"
-                step="1"
-                inputmode="decimal"
-                placeholder="Enter construction valuation (optional)"
-                aria-describedby="valuationHelp"
-              />
-            </div>
-            <p class="helper-text" id="valuationHelp">
-              If construction valuation is unknown at the entitlement stage, leave this blank.
-              The Community Planning Fee will be based on 0.5% of eligible activity fees,
-              with a minimum of $5.
-            </p>
-          </div>
+    h4{
+      display:block;
+      font: size 1rem;
+      font: weight 600px;
+      text-transform:uppercase;
+      color:var(--text);
+      margin-bottom:.35rem;
+    }
 
-          <div class="field-group" aria-label="Available planning fees and deposits">
-            <h3>
-              Activity fees and deposits
-            </h3>
-            <ul class="fee-list" id="feeList" role="list"></ul>
-          </div>
-        </section>
+    p{
+      margin-bottom:1em;
+      color:var(--text);
+      font-size:1rem;
+      line-height:1.5rem;
+    }
 
-        <aside class="card fee-summary-card" aria-label="Fee estimate">
-          <div class="card-header">
-            <div>
-              <h2 class="card-title" id="fee-estimate-heading">Fee estimate</h2>
-              <div class="card-subtitle">Based on your selected activities.</div>
-            </div>
-            <span class="chip" id="selectedCountChip">0 items selected</span>
-          </div>
+    .version-pill{
+      font-size:.75rem;
+      padding:.15rem .5rem;
+      border-radius:999px;
+      border:1px solid #05204E;
+      color:#e5e7eb;
+    }
 
-          <section aria-labelledby="fee-estimate-heading">
-            <div id="feeTotalsLive" class="sr-only" role="status" aria-live="polite"></div>
+    .site-tagline{
+      margin-top:.15rem;
+      max-width:none;
+      font-size:.85rem;
+      color:var(--text);
+    }
 
-            <div class="totals-grid">
-              <div class="totals-label">Total activity fees</div>
-              <div class="totals-value" id="activityTotalDisplay">$0.00</div>
+    @media (min-width: 1024px){
+      .site-tagline{
+        white-space:nowrap;
+      }
+    }
 
-              <div id="activityList" class="activity-list"
-                   aria-label="Activity fee details"></div>
+    main#main-content{
+      padding:0 1.25rem 0.25rem;
+      margin-bottom:0;
+    }
 
-              <div class="totals-label">Total filing fees</div>
-              <div class="totals-value" id="filingTotalDisplay">$0.00</div>
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr);
+      gap:1.25rem;
+      margin-bottom:0.25rem;
+    }
 
-              <div class="totals-label">Community Planning Fee (0.5%)</div>
-              <div class="totals-value" id="cpfDisplay">$0.00</div>
+    @media (max-width:960px){
+      .layout{ grid-template-columns:1fr; }
+    }
 
-              <div class="totals-label">Technology Fee (6%)</div>
-              <div class="totals-value" id="techFeeDisplay">$0.00</div>
-            </div>
+    .card{
+      border-radius:1rem;
+      border:1px solid var(--border);
+      padding:0.75rem 1rem 0.5rem;;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:0.75rem;
+      margin-bottom:.75rem;
+    }
+/*    .card-title{
+      font-size:1rem;
+      font-weight:600; 
+      letter-spacing:.03em;
+      text-transform:uppercase;
+      color:var(--text);
+    }
 
-            <div class="totals-grand">
-              <div class="totals-grand-label">Estimated total</div>
-              <div class="totals-grand-value" id="grandTotalDisplay">$0.00</div>
-            </div>
+    .card-subtitle{
+      font-size:.8rem;
+      color:var(--);
+    }
 
-            <div class="selected-activities" aria-label="Selected activities">
-              <div class="selected-activities-title">Selected activities</div>
-              <ul id="selectedActivitiesList" class="selected-list"></ul>
-            </div>
+*/
+    .chip{
+      font-size:.7rem;
+      padding:.1rem .4rem;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+    .field-group{ margin-bottom:1rem; }
+   /* .field-label{
+      display:block;
+      font-size:1rem;
+      font: weight 600px;
+      text-transform:uppercase;
+      color:var(--text);
+      margin-bottom:.35rem;
+    }
+      */
+    .field-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      align-items:center;
+      font-size:.9rem;
+      color:var(--text)
+    }
+    input[type="number"], input[type="text"]{
+      background-color:#EFF0F4;
+      border-radius:.6rem;
+      border:1px solid var(--border);
+      padding:.45rem .75rem;
+      color:var(--text);
+      font-size:.9rem;
+      min-width:0;
+      width: 220px;
+    }
+    input[type="number"]::placeholder,
+    input[type="text"]::placeholder{ color:var(--muted); }
+    .helper-text{
+      font-size:.72rem;
+      color:var(--text);
+      margin-top:.15rem;
+    }
+    .fee-list{
+      margin:0;
+      padding:0;
+      list-style:none;
+      max-height:60vh;
+      overflow:auto;
+      border-radius:.75rem;
+      border:1px solid var(--border);
+      background:var(--panel);
+    }
 
-            <div style="margin-top:.35 rem;">
-              <span class="badge-soft" id="summaryBadge">No activities selected</span>
-            </div>
-          </section>
+    .fee-section{
+      border-bottom:1px solid var(--border)
+    }
+    .fee-section-toggle{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      border:none;
+      padding:.55rem .85rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#9ca3af;
+      cursor:pointer;
+    }
+    .fee-section-title{
+      flex:1;
+    }
+    .fee-section-indicator{
+      font-size:.85rem;
+      margin-left:.5rem;
+      transition:transform .15s ease;
+    }
+    .fee-section-panel{
+      list-style:none;
+      margin:0;
+      padding:0 0 .25rem 0;
+    }
+    .fee-section-open .fee-section-indicator{
+      transform:rotate(180deg);
+    }
 
-          <div class="action-row" aria-label="Actions">
-            <button type="button" class="btn" id="clearButton">
-              Clear selections
-            </button>
-            <button type="button" class="btn btn-primary" id="printButton">
-              Print fee estimate
-            </button>
-          </div>
+    .fee-section-header{
+      padding:.6rem .85rem .35rem;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--muted);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      backdrop-filter:blur(12px);
+      background:var(--bg);
+      z-index:2;
+    }
+    .fee-item{
+      display:flex;
+      gap:.6rem;
+      padding:.55rem .9rem;
+      border-bottom:1px solid var(--border);
+      align-items:flex-start;
+    }
+    .fee-item:last-child{ border-bottom:none; }
+    .fee-item input[type="checkbox"]{ margin-top:.1rem; }
+    .fee-item-main{ flex:1; min-width:0; }
+    .fee-item-name{
+      display:block;
+      font-size:.86rem;
+      color:var(--text)
+    }
+    .fee-item-amounts{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      margin-top:.15rem;
+      font-size:.78rem;
+      color:var(--text)
+      gap:.5rem;
+    }
+    .fee-amount-label{ opacity:.85; }
+    .fee-amount-value{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .fee-summary-card{
+      position:sticky;
+      top:1rem;
+      display:flex;
+      flex-direction:column;
+    }
+    .totals-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:.45rem .75rem;
+      font-size:.85rem;
+      margin-top:.75rem;
+    }
+    .totals-label{ color: var(--text); }
+    .totals-value{
+      text-align:right;
+      font-variant-numeric:tabular-nums;
+    }
+    .totals-grand{
+      margin-top:.75rem;
+      padding-top:.75rem;
+      border-top:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:.5rem;
+    }
+    .totals-grand-label{
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .totals-grand-value{
+      font-size:1.15rem;
+      font-weight:700;
+      font-variant-numeric:tabular-nums;
+    }
+    .badge-soft{
+      font-size:.7rem;
+      padding:.1rem 1rem;
+      border-radius:999px;
+      background:var(--brand-soft);
+      color: var(--text);
+    }
+    .selected-activities{
+      margin-top:.75rem;
+      padding-top:.5rem;
+      border-top:1px solid var(--border);
+      max-height:180px;
+      overflow-y:auto;
+    }
+    .selected-activities-title{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--text);
+      margin-bottom:.25rem;
+    }
+    .selected-list{
+      margin:0;
+      padding-left:1.1rem;
+      font-size:.78rem;
+      color:var(--text);
+    }
+    .selected-list li+li{ margin-top:.1rem; }
 
-          <br>
+    /* Selected activity list directly under Total activity fees row */
+    .activity-list{
+      margin:4px 0 4px 8px;
+      padding-left:10px;
+      border-left:1px solid var(--border);
+      font-size:12px;
+      max-height:180px;
+      overflow-y:auto;
+      grid-column:1 / -1;
+    }
+    .activity-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .activity-name{
+      flex:1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .activity-amt{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .activity-empty{
+      color:var(--muted);
+      font-style:italic;
+    }
 
-          <div class="notes-header">Notes:</div>
-          <ul class="notes-list" aria-label="Important notes">
-            <li>Estimates are for general information only and may not include all fees.</li>
-            <li>Some projects may require additional review or outside agency fees.</li>
-            <li>Deposits are billed against actual staff time and consultant costs.</li>
-            <li>Fees for unlisted services are based on the departmental hourly rate plus any actual costs.</li>
-            <li>Filing Fee is $95</li>
-          </ul>
-        </aside>
-      </div>
-    </main>
+    .action-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-top:1rem;
+    }
+    .btn{
+      border-radius:999px;
+      border:1px solid #05204E;
+      background:transparent;
+      color:#05204E;
+      font-size:.8rem;
+      padding:.4rem .85rem;
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:transparent;
+      background:#05204E;
+      color:#EFF0F4;
+      font-weight:600;
+    }
+    .btn:hover{ filter:brightness(1.05); }
+    .notes-list{
+      margin:.5rem 0 0;
+      padding-left:1.1rem;
+      font-size:.75rem;;
+    }
+    .notes-list li+li{ margin-top:.15rem; }
 
-    <footer class="site-footer" role="contentinfo">
-      For assistance with this tool or help understanding your fees,
-      contact the Planning Division at planning@alamedaca.gov
-      or 510-747-6805 during regular business hours.
-    </footer>
-  </div>
+    footer.site-footer{
+      margin-top:0.50rem;
+      padding:0.15rem 1.25rem 0.2rem;
+      font-size:.72rem;
+      color:var(--muted);
+    }
+    .site-footer{
+      margin-top:0 !important;
+    }
 
-  <script src="script.js" defer></script>
-</body>
-</html>
+    @media print{
+  body{
+    background:#ffffff !important;
+    color:#000000 !important;
+  }
+
+  /* Show header and footer in print */
+  header.site-header,
+  footer.site-footer{
+    display:block !important;
+    color:#000000 !important;
+    background:#ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide only the project info card and action buttons */
+  .card[aria-label="Project information and fee selection"],
+  .action-row{
+    display:none !important;
+  }
+
+  .page-shell{
+    display:block;
+    padding:0.5in;
+  }
+
+  /* Fee estimate prints cleanly */
+  .fee-summary-card{
+    position:static;
+    box-shadow:none;
+    border-radius:0;
+    background:#ffffff !important;
+    border:1px solid #000000;
+    color:#000000;
+  }
+
+  .totals-label,
+  .totals-value,
+  .totals-grand-label,
+  .totals-grand-value,
+  .selected-activities-title,
+  .selected-list,
+  .notes-list{
+    color:#000000 !important;
+  }
+
+  /* Expand list areas in print */
+  .activity-list,
+  .selected-activities{
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  /* Avoid awkward page breaks */
+  .fee-summary-card,
+  .selected-activities,
+  .activity-item,
+  .selected-list li{
+    page-break-inside:avoid;
+  }
+}
