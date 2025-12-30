@@ -235,6 +235,7 @@
     }
     .fee-section-title{
       flex:1;
+      color:var(--text)
     }
     .fee-section-indicator{
       font-size:.85rem;
@@ -255,7 +256,7 @@
       font-size:.8rem;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color:var(--muted);
+      color:var(--text);
       border-bottom:1px solid var(--border);
       position:sticky;
       top:0;
@@ -493,4 +494,3 @@
     page-break-inside:avoid;
   }
 }
-
