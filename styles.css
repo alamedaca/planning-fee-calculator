@@ -95,7 +95,6 @@
     h4{
       display:block;
       font: size 1rem;
-      font: weight 600px;
       text-transform:uppercase;
       color:var(--text);
       margin-bottom:.35rem;
@@ -502,3 +501,4 @@
     page-break-inside:avoid;
   }
 }
+
