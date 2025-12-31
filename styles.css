@@ -8,6 +8,17 @@
       --text:#05204E;
       --blue: #22498C;
       --border:#C8D8F5;
+
+      --radius-sm: 0.4rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;padding:0}
@@ -27,6 +38,7 @@
       font-weight:700;
       color:var(--blue);
       margin:0;
+      padding: 0 0 var(--space-2) 0;
     }
 
     h3{
@@ -35,6 +47,7 @@
       font-weight:600px;
       color:var(--text);
       margin:0;
+      padding: 0 0 var(--space-2) 0;
     }
 
     h4{
@@ -494,4 +507,3 @@
     page-break-inside:avoid;
   }
 }
-
