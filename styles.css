@@ -29,7 +29,7 @@ base and typography
   box-sizing:border-box
 }
 header, footer {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-5);
 }
 
 html, body {
@@ -514,3 +514,4 @@ footer{
   page-break-inside:avoid;
 }
 }
+
