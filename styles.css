@@ -33,7 +33,6 @@
       display:block;
       font-size:1.25rem;
       font-weight:600px;
-      text-transform:capitalize;
       color:var(--text);
       margin:0;
     }
@@ -495,3 +494,4 @@
     page-break-inside:avoid;
   }
 }
+
