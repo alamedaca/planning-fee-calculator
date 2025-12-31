@@ -127,7 +127,9 @@ p{
     display:flex;
     flex-direction:column;
   }
-
+  header.site-header{
+    padding:0.5rem 1.25rem 0.25rem;
+  }
   .site-title-row{
     display:flex;
     flex-wrap:wrap;
@@ -204,8 +206,8 @@ p{
 /*      font-size:.8rem;
     text-transform:uppercase;
     letter-spacing:.08em;
-    color:var(--text);*/
-    margin-bottom:.25rem;
+    color:var(--text);
+    margin-bottom:.25rem;*/
   }
   .field-row{
     display:flex;
@@ -226,7 +228,7 @@ p{
     width: 220px;
   }
   input[type="number"]::placeholder,
-  input[type="text"]::placeholder{ color:var(--muted); }
+  input[type="text"]::placeholder{ color: var(--muted); }
   .helper-text{
     color:var(--text);
     margin-top:.15rem;
