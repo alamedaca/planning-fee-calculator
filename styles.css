@@ -257,8 +257,8 @@ p{
     justify-content:space-between;
     align-items:center;
     font-size:1rem;
-    text-transform:uppercase;
-    letter-spacing:.12em;
+/*    text-transform:uppercase;
+    letter-spacing:.12em; */
     color:var(--text) ;
     cursor:pointer;
   }
