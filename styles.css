@@ -6,6 +6,7 @@
       --panel-soft:#EFF0F4;
       --muted:#767d8a; /* secondary text color */
       --text:#05204E;
+      --blue: #22498C;
       --border:#C8D8F5;
     }
     *{box-sizing:border-box}
@@ -23,8 +24,8 @@
     h2{
       display:block;
       font-size:1.5rem;
-      font-weight:600px;
-      color:var(--text);
+      font-weight:700;
+      color:var(--blue);
       margin:0;
     }
 
@@ -32,14 +33,14 @@
       display:block;
       font-size:1.25rem;
       font-weight:600px;
-      text-transform:uppercase;
+      text-transform:capitalize;
       color:var(--text);
       margin:0;
     }
 
     h4{
       display:block;
-      font: size 1rem;
+      font-size:1rem;
       text-transform:uppercase;
       color:var(--text);
       margin:0;
@@ -321,11 +322,11 @@
       gap:.5rem;
     }
     .totals-grand-label{
-      font-size:.9rem;
-      font-weight:600;
+      font-size:1rem;
+      font-weight:700;
     }
     .totals-grand-value{
-      font-size:1.15rem;
+      font-size:1rem;
       font-weight:700;
       font-variant-numeric:tabular-nums;
     }
