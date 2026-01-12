@@ -143,13 +143,14 @@ p{
     border:1px solid #05204E;
     color:#e5e7eb;
   }
-
+/*
   .site-tagline{
     margin-top:.15rem;
     max-width:none;
     font-size:.85rem;
     color:var(--text);
   }
+*/
 
   @media (min-width: 1024px){
     .site-tagline{
@@ -234,7 +235,7 @@ p{
   }
   .fee-list{
     margin:0;
-    padding:0;
+    padding: 1.5em 0 0 0;
     list-style:none;
     max-height:60vh;
     overflow:auto;
