@@ -358,7 +358,7 @@ const FEE_ITEMS = [
         cpf = state.cpfMin ? Math.max(5, rawCpf) : rawCpf;
       } else {
         // CPF based on eligible activity, with $5 minimum if enabled
-        const alt = 0.005 * addonActivity;
+         const alt = 0.005 * (addonActivity + filing);
         cpf = state.cpfMin ? Math.max(5, alt) : alt;
       }
 
